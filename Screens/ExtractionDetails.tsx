@@ -1,0 +1,114 @@
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
+import { Extraction } from '../Models/Extraction';
+import moment from 'moment';
+import * as _ from 'lodash';
+
+function determineBrewName(extractionRatio: number): string {
+    let espressoType = '';
+    switch (true) {
+        case (extractionRatio <= 1.5): {
+            espressoType = 'Ristretto (1:1 - 1:1.5): A viscous with a heavy body, but lacking in clarity. This tighter brew ratio plays to the strengths of a darker-roasted, low-grown coffee that has chocolatey, caramel characteristics.';
+            break;
+        }
+        case (extractionRatio <= 2): {
+            espressoType = 'Normale (1:1.5 - 1:2): The current norm in specialty coffee shops across the US, Europe and Australia trend toward a normale espresso range somewhere between a 1:1.5 or 1:2 ratio.';
+            break;
+        }
+        default: {
+            espressoType = 'Lungo (1:3 - 1:4): By extending the brew ratio, the clarity of the coffee increases, body and viscosity decrease, and more individual notes of coffee become evident and easier to pick out';
+            break;
+        }
+    }
+    return espressoType;
+}
+
+export default function ExtractionDetails({ route, navigation }: any) {
+
+    const { _id } = route.params;
+    const [isLoading, setLoading] = useState(true);
+    const [extraction, setExtraction] = useState<Extraction>();
+    const dateFormat = 'h:mm a YYYY MMMM D';
+    const extractionRatio = extraction && _.round(extraction.weightOut / extraction.weightIn);
+
+    const loadExtraction = () => {
+        fetch(`http://localhost:8080/extraction-logs/${_id}`)
+            .then((response) => response.json())
+            .then((json) => setExtraction(json))
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        loadExtraction();
+    }, [isLoading]);
+
+    return (
+        <View style={styles.container}>
+            {isLoading ? <ActivityIndicator /> :
+                <View style={styles.dataContainer}>
+                    <Text style={styles.date}>{moment(extraction?.extractionDate).format(dateFormat)}</Text>
+                    <View style={styles.row}>
+                        <View style={styles.column}>
+                            <Text style={styles.dataText}>{extraction?.extractionTime}s</Text>
+                            <Text style={styles.label}>Extraction Time</Text>
+                        </View>
+                        <View style={styles.column}>
+                            <Text style={styles.dataText}>{extraction?.weightIn}g</Text>
+                            <Text style={styles.label}>Weight In</Text>
+                        </View>
+                        <View style={styles.column}>
+                            <Text style={styles.dataText}>{extraction?.weightOut}g</Text>
+                            <Text style={styles.label}>Weight Out</Text>
+                        </View>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.brewType}>{extractionRatio && determineBrewName(extractionRatio)}</Text>
+                    </View>
+                </View>
+            }
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#E6DDC5',
+    },
+    dataContainer: {
+    },
+    date: {
+        fontSize: 20,
+        margin: 20,
+        color: '#583A25',
+    },
+    row: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 20,
+    },
+    column: {
+        flexDirection: 'column',
+        padding: 20,
+    },
+    dataText: {
+        fontSize: 32,
+        color: '#583A25',
+        textAlign: 'center',
+    },
+    brewType: {
+        flex: 1,
+        flexWrap: 'wrap',
+        fontSize: 14,
+        color: '#583A25',
+        textAlign: 'center',
+    },
+    label: {
+        fontSize: 14,
+        color: '#583A25',
+    }
+});
