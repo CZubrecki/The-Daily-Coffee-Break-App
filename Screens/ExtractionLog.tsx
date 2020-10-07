@@ -3,15 +3,18 @@ import { Text, View, Alert, StyleSheet, StatusBar, TouchableOpacity } from "reac
 import { useForm } from "react-hook-form";
 import { TextInput } from 'react-native-gesture-handler';
 import { Button } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function ExtractionLog({ navigation }: any) {
 
     const onSubmit = async (data: any) => {
+        const token = await AsyncStorage.getItem('token');
         await fetch('http://localhost:8080/extraction-logs/add-extraction-log', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify({
                 weightIn: data.weightIn,

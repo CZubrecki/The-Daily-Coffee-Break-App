@@ -3,20 +3,29 @@ import React, { useEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
 import FloatingButton from '../Components/FloatingButton';
 import { Extraction } from '../Models/Extraction';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Home({ navigation }: any) {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
 
-    const handleRefresh = () => {
-        fetch('http://localhost:8080/extraction-logs')
-            .then((response) => response.json())
+    const handleRefresh = async () => {
+        const token = await AsyncStorage.getItem('token');
+        fetch('http://localhost:8080/extraction-logs', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        }).then((response) => response.json())
             .then((json) => setData(json))
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     };
 
     useEffect(() => {
+
         handleRefresh();
     }, []);
 
