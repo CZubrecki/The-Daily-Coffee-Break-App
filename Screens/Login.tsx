@@ -1,34 +1,18 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Alert, Text, TextInput } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AuthContext } from '../Components/context';
 
 export default function Login({ navigation }: any) {
     const { register, handleSubmit, setValue } = useForm();
 
+    const { login } = useContext(AuthContext);
+
     const onSubmit = async (data: any) => {
-        await fetch('http://localhost:8080/auth/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password,
-            })
-        }).then((response) => response.json())
-            .then(async (responseJson: any) => {
-                if (responseJson && responseJson.user?.token) {
-                    const token = responseJson.user.token;
-                    await AsyncStorage.setItem('token', token);
-                }
-            }).catch((error: any) => {
-                Alert.alert(error);
-            }).finally(() => {
-            });
+        login(data.email, data.password);
     }
 
     useEffect(() => {
@@ -55,6 +39,11 @@ export default function Login({ navigation }: any) {
             <TouchableOpacity
                 onPress={handleSubmit(onSubmit)}>
                 <Text> Save </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navigation.navigate('SignUp')}>
+                <Text> Sign Up </Text>
             </TouchableOpacity>
         </View>
     );

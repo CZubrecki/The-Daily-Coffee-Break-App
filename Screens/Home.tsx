@@ -11,7 +11,8 @@ export default function Home({ navigation }: any) {
 
     const handleRefresh = async () => {
         const token = await AsyncStorage.getItem('token');
-        fetch('http://localhost:8080/extraction-logs', {
+        const ownerId = await AsyncStorage.getItem('_id');
+        fetch(`http://localhost:8080/extraction-logs/my-logs/${ownerId}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -48,6 +49,7 @@ export default function Home({ navigation }: any) {
                 :
                 <View style={styles.list}>
                     <FlatList
+                        showsVerticalScrollIndicator={false}
                         data={data}
                         renderItem={renderItem}
                         keyExtractor={(item: any) => item.id}

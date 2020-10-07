@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function determineBrewName(extractionRatio: number): string {
     let espressoType = '';
@@ -31,8 +32,16 @@ export default function ExtractionDetails({ route, navigation }: any) {
     const dateFormat = 'h:mm a YYYY MMMM D';
     const extractionRatio = extraction && _.round(extraction.weightOut / extraction.weightIn);
 
-    const loadExtraction = () => {
-        fetch(`http://localhost:8080/extraction-logs/${_id}`)
+    const loadExtraction = async () => {
+        const token = await AsyncStorage.getItem('token');
+        fetch(`http://localhost:8080/extraction-logs/${_id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        })
             .then((response) => response.json())
             .then((json) => setExtraction(json))
             .catch((error) => console.error(error))

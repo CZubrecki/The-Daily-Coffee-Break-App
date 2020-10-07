@@ -9,6 +9,7 @@ export default function ExtractionLog({ navigation }: any) {
 
     const onSubmit = async (data: any) => {
         const token = await AsyncStorage.getItem('token');
+        const ownerId = await AsyncStorage.getItem('_id');
         await fetch('http://localhost:8080/extraction-logs/add-extraction-log', {
             method: 'POST',
             headers: {
@@ -17,6 +18,7 @@ export default function ExtractionLog({ navigation }: any) {
                 'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify({
+                ownerId: ownerId,
                 weightIn: data.weightIn,
                 weightOut: data.weightOut,
                 extractionTime: data.extractionTime
