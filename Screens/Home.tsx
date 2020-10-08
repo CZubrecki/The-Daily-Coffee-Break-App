@@ -11,8 +11,7 @@ export default function Home({ navigation }: any) {
 
     const handleRefresh = async () => {
         const token = await AsyncStorage.getItem('token');
-        const ownerId = await AsyncStorage.getItem('_id');
-        fetch(`http://localhost:8080/extraction-logs/my-logs/${ownerId}`, {
+        fetch(`http://localhost:8080/extraction-logs`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -26,9 +25,8 @@ export default function Home({ navigation }: any) {
     };
 
     useEffect(() => {
-
         handleRefresh();
-    }, []);
+    }, [isLoading]);
 
     const renderItem = ({ item }: any) => (
         <ListItem extractionData={{

@@ -70,9 +70,11 @@ export default function App() {
       }).then((response) => response.json())
         .then(async (responseJson: any) => {
           if (responseJson && responseJson.user?.token) {
-            console.log(responseJson.user.id);
-            await AsyncStorage.setItem('token', responseJson.user.token);
-            await AsyncStorage.setItem('_id', responseJson.user.id);
+            try {
+              await AsyncStorage.setItem('token', responseJson.user.token);
+            } catch (err) {
+              console.log(err);
+            }
             dispatch({ type: 'LOGIN', id: responseJson.user.email, token: responseJson.user.token, userId: responseJson.user.id });
           }
         }).catch((error: any) => {
@@ -80,7 +82,11 @@ export default function App() {
         });
     },
     logout: async () => {
-      await AsyncStorage.removeItem('token');
+      try {
+        await AsyncStorage.removeItem('token');
+      } catch (err) {
+        console.log(err);
+      }
       dispatch({ type: 'LOGOUT' });
     },
     signUp: async (email: string, password: string) => {
@@ -97,7 +103,11 @@ export default function App() {
       }).then((response) => response.json())
         .then(async (responseJson: any) => {
           if (responseJson && responseJson.user?.token) {
-            await AsyncStorage.setItem('_id', responseJson.user.id);
+            try {
+              await AsyncStorage.setItem('token', responseJson.user.token);
+            } catch (err) {
+              console.log(err);
+            }
             dispatch({ type: 'SIGNUP', id: responseJson.user.email, token: responseJson.user.token, userId: responseJson.user.id });
           }
         }).catch((error: any) => {
@@ -108,8 +118,12 @@ export default function App() {
 
   useEffect(() => {
     setTimeout(async () => {
-      const token = await AsyncStorage.getItem('token');
-      dispatch({ type: 'RETRIEVE_TOKEN', token: token });
+      try {
+        const token = await AsyncStorage.getItem('token');
+        dispatch({ type: 'RETRIEVE_TOKEN', token: token });
+      } catch (err) {
+        console.log(err);
+      }
     }, 1000);
   }, []);
 

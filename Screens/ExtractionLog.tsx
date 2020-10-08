@@ -8,27 +8,30 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default function ExtractionLog({ navigation }: any) {
 
     const onSubmit = async (data: any) => {
-        const token = await AsyncStorage.getItem('token');
-        const ownerId = await AsyncStorage.getItem('_id');
-        await fetch('http://localhost:8080/extraction-logs/add-extraction-log', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                ownerId: ownerId,
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const body = JSON.stringify({
                 weightIn: data.weightIn,
                 weightOut: data.weightOut,
                 extractionTime: data.extractionTime
-            })
-        }).catch((error: any) => {
-            Alert.alert(error);
-        }).finally(() => {
-            navigation.navigate('Home');
-            return;
-        });
+            });
+            await fetch('http://localhost:8080/extraction-logs/add-extraction-log', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
+                body,
+            }).catch((error: any) => {
+                Alert.alert(error);
+            }).finally(() => {
+                navigation.navigate('Home');
+                return;
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const { register, handleSubmit, setValue } = useForm();
