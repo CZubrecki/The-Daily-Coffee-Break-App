@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '135%',
+        paddingTop: '50%',
     },
     row: {
         alignItems: 'center',
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     signUp: {
+        color: '#583A25',
         paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',

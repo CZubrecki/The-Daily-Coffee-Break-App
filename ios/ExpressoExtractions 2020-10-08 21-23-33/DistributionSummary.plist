@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ExpressoExtractions.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>FCBB2E0BF51C665C6FB0FDF82C8CEC5769A800FB</string>
+				<key>dateExpires</key>
+				<string>2021-10-08</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>PQ393RQNB5.org.reactjs.native.example.ExpressoExtractions</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>PQ393RQNB5</string>
+				<key>get-task-allow</key>
+				<true/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>PQ393RQNB5.org.reactjs.native.example.ExpressoExtractions</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>ExpressoExtractions.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>0c997d74-35eb-41b4-9940-8b6cce938414</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: *</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>PQ393RQNB5</string>
+				<key>name</key>
+				<string>Connor Zubrecki</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
