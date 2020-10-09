@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, Alert, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import React, { useEffect } from 'react';
+import { Text, View, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput } from 'react-native-gesture-handler';
-import { Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Timer from '../Components/Timer';
 
 export default function ExtractionLog({ navigation }: any) {
 
@@ -13,9 +13,9 @@ export default function ExtractionLog({ navigation }: any) {
             const body = JSON.stringify({
                 weightIn: data.weightIn,
                 weightOut: data.weightOut,
-                extractionTime: data.extractionTime
+                extractionTime: data.extractionTime.toString(),
             });
-            await fetch('http://localhost:8080/extraction-logs/add-extraction-log', {
+            await fetch('http://35.182.216.111:8080/extraction-logs/add-extraction-log', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -42,6 +42,10 @@ export default function ExtractionLog({ navigation }: any) {
         register('extractionTime');
     }, [register]);
 
+    const setExtractionTime = (seconds: any) => {
+        setValue('extractionTime', seconds);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.fields}>
@@ -55,9 +59,6 @@ export default function ExtractionLog({ navigation }: any) {
                             }} />
                         <Text style={styles.label}>Weight In</Text>
                     </View>
-                </View>
-
-                <View style={styles.row}>
                     <View style={styles.column}>
                         <TextInput
                             keyboardType='numeric'
@@ -70,15 +71,7 @@ export default function ExtractionLog({ navigation }: any) {
                 </View>
 
                 <View style={styles.row}>
-                    <View style={styles.column}>
-                        <TextInput
-                            keyboardType='numeric'
-                            style={styles.inputField}
-                            onChangeText={text => {
-                                setValue('extractionTime', text);
-                            }} />
-                        <Text style={styles.label}>Extraction Time</Text>
-                    </View>
+                    <Timer setExtractionTime={setExtractionTime} />
                 </View>
             </View>
             <View style={styles.bottom}>

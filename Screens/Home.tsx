@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View, Text, StatusBar, FlatList, ActivityIndicator, Button } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
 import FloatingButton from '../Components/FloatingButton';
@@ -11,7 +11,7 @@ export default function Home({ navigation }: any) {
 
     const handleRefresh = async () => {
         const token = await AsyncStorage.getItem('token');
-        fetch(`http://localhost:8080/extraction-logs`, {
+        fetch(`http://35.182.216.111:8080/extraction-logs`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

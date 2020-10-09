@@ -34,7 +34,7 @@ export default function ExtractionDetails({ route, navigation }: any) {
 
     const loadExtraction = async () => {
         const token = await AsyncStorage.getItem('token');
-        await fetch(`http://localhost:8080/extraction-logs/${_id}`, {
+        await fetch(`http://35.182.216.111:8080/extraction-logs/${_id}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

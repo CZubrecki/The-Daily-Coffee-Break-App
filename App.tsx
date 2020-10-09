@@ -57,7 +57,7 @@ export default function App() {
 
   const authContext = useMemo(() => ({
     login: async (email: string, password: string) => {
-      await fetch('http://localhost:8080/auth/login', {
+      await fetch('http://35.182.216.111:8080//auth/login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -90,7 +90,7 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     signUp: async (email: string, password: string) => {
-      await fetch('http://localhost:8080/auth/', {
+      await fetch('http://35.182.216.111:8080/auth/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -1,10 +1,11 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Alert, Text, TextInput } from 'react-native';
+import { Text, TextInput } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Components/context';
+import { faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 export default function Login({ navigation }: any) {
     const { register, handleSubmit, setValue } = useForm();
@@ -24,6 +25,7 @@ export default function Login({ navigation }: any) {
         <View style={styles.container}>
             <View style={styles.inputContainer}>
                 <View style={styles.row}>
+                    <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
                     <TextInput
                         placeholderTextColor="#583A25"
                         autoCapitalize="none"
@@ -34,6 +36,7 @@ export default function Login({ navigation }: any) {
                         }} />
                 </View>
                 <View style={styles.row}>
+                    <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
                         placeholder='Password'
                         placeholderTextColor="#583A25"
@@ -72,25 +75,31 @@ const styles = StyleSheet.create({
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '125%',
+        paddingTop: '135%',
     },
     row: {
+        alignItems: 'center',
         flexDirection: 'row',
         margin: 10,
+        borderColor: '#583A25',
+        height: 35,
+        width: 300,
+        borderWidth: 1,
+        borderRadius: 20,
     },
     email: {
-        borderColor: '#583A25',
+        paddingLeft: 10,
         height: 35,
-        width: 200,
-        borderWidth: 1,
-        borderRadius: 10,
+        width: 300,
+    },
+    icon: {
+        marginLeft: 10,
+        color: '#583A25',
     },
     password: {
-        borderColor: '#583A25',
+        paddingLeft: 10,
         height: 35,
-        width: 200,
-        borderWidth: 1,
-        borderRadius: 10,
+        width: 300,
     },
     bottom: {
         flex: 1,
@@ -101,7 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#583A25',
         width: 300,
         height: 40,
-        borderRadius: 5,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
