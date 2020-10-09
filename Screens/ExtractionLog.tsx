@@ -49,8 +49,8 @@ export default function ExtractionLog({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.fields}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.fields}>
                     <View style={styles.row}>
                         <View style={styles.column}>
                             <TextInput
@@ -71,19 +71,19 @@ export default function ExtractionLog({ navigation }: any) {
                             <Text style={styles.label}>Weight Out</Text>
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
 
-                <View style={styles.row}>
-                    <Timer setExtractionTime={setExtractionTime} />
+                    <View style={styles.row}>
+                        <Timer setExtractionTime={setExtractionTime} />
+                    </View>
                 </View>
-            </View>
-            <View style={styles.bottom}>
-                <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.submitButtonText}> Save </Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.bottom}>
+                    <TouchableOpacity
+                        style={styles.submitButton}
+                        onPress={handleSubmit(onSubmit)}>
+                        <Text style={styles.submitButtonText}> Save </Text>
+                    </TouchableOpacity>
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     );
 }
