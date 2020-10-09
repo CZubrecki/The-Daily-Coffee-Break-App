@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
+import { Keyboard } from 'react-native'
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import Timer from '../Components/Timer';
 
@@ -49,26 +50,28 @@ export default function ExtractionLog({ navigation }: any) {
     return (
         <View style={styles.container}>
             <View style={styles.fields}>
-                <View style={styles.row}>
-                    <View style={styles.column}>
-                        <TextInput
-                            keyboardType='numeric'
-                            style={styles.inputField}
-                            onChangeText={text => {
-                                setValue('weightIn', text);
-                            }} />
-                        <Text style={styles.label}>Weight In</Text>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                    <View style={styles.row}>
+                        <View style={styles.column}>
+                            <TextInput
+                                keyboardType='numeric'
+                                style={styles.inputField}
+                                onChangeText={text => {
+                                    setValue('weightIn', text);
+                                }} />
+                            <Text style={styles.label}>Weight In</Text>
+                        </View>
+                        <View style={styles.column}>
+                            <TextInput
+                                keyboardType='numeric'
+                                style={styles.inputField}
+                                onChangeText={text => {
+                                    setValue('weightOut', text);
+                                }} />
+                            <Text style={styles.label}>Weight Out</Text>
+                        </View>
                     </View>
-                    <View style={styles.column}>
-                        <TextInput
-                            keyboardType='numeric'
-                            style={styles.inputField}
-                            onChangeText={text => {
-                                setValue('weightOut', text);
-                            }} />
-                        <Text style={styles.label}>Weight Out</Text>
-                    </View>
-                </View>
+                </TouchableWithoutFeedback>
 
                 <View style={styles.row}>
                     <Timer setExtractionTime={setExtractionTime} />

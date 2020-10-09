@@ -52,7 +52,7 @@ export default function Login({ navigation }: any) {
                 <TouchableOpacity
                     style={styles.signIn}
                     onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.signInText}> Save </Text>
+                    <Text style={styles.signInText}> Login In </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
