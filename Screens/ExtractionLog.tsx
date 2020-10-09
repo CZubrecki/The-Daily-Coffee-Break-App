@@ -71,19 +71,18 @@ export default function ExtractionLog({ navigation }: any) {
                             <Text style={styles.label}>Weight Out</Text>
                         </View>
                     </View>
-
-                    <View style={styles.row}>
-                        <Timer setExtractionTime={setExtractionTime} />
-                    </View>
-                </View>
-                <View style={styles.bottom}>
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={handleSubmit(onSubmit)}>
-                        <Text style={styles.submitButtonText}> Save </Text>
-                    </TouchableOpacity>
                 </View>
             </TouchableWithoutFeedback>
+            <View style={styles.row}>
+                <Timer setExtractionTime={setExtractionTime} />
+            </View>
+            <View style={styles.bottom}>
+                <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={handleSubmit(onSubmit)}>
+                    <Text style={styles.submitButtonText}> Save </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -98,6 +97,7 @@ const styles = StyleSheet.create({
     fields: {
         marginTop: '25%',
         alignItems: 'center',
+        height: '50%'
     },
     row: {
         flexDirection: 'row',
