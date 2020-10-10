@@ -18,7 +18,6 @@ export default function Login({ navigation }: any) {
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [isValidPassword, setIsValidPassword] = useState(true);
     const { register, handleSubmit, setValue } = useForm();
-
     const { login } = useContext(AuthContext);
 
     const onSubmit = async (data: SignIn) => {
