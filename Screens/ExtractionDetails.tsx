@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
-import AsyncStorage from '@react-native-community/async-storage';
+import { getExtractionLogById } from '../api/ExtractionAPI';
 
 function determineBrewName(extractionRatio: number): string {
     let espressoType = '';
@@ -25,7 +25,6 @@ function determineBrewName(extractionRatio: number): string {
 }
 
 export default function ExtractionDetails({ route, navigation }: any) {
-
     const { _id } = route.params;
     const [isLoading, setLoading] = useState(true);
     const [extraction, setExtraction] = useState<Extraction>();
@@ -33,19 +32,11 @@ export default function ExtractionDetails({ route, navigation }: any) {
     const extractionRatio = extraction && _.round(extraction.weightOut / extraction.weightIn);
 
     const loadExtraction = async () => {
-        const token = await AsyncStorage.getItem('token');
-        await fetch(`http://35.182.216.111:8080/extraction-logs/${_id}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => setExtraction(json))
-            .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+        const extractionData = await getExtractionLogById(_id);
+        if (extractionData) {
+            setExtraction(extractionData);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {

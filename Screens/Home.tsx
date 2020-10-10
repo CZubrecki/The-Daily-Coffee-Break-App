@@ -1,27 +1,19 @@
-import { StyleSheet, View, Text, FlatList, ActivityIndicator, Button } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
-import FloatingButton from '../Components/FloatingButton';
 import { Extraction } from '../Models/Extraction';
-import AsyncStorage from '@react-native-community/async-storage';
+import { getExtractionLogs } from '../api/ExtractionAPI';
 
 export default function Home({ navigation }: any) {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
 
     const handleRefresh = async () => {
-        const token = await AsyncStorage.getItem('token');
-        fetch(`http://35.182.216.111:8080/extraction-logs`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-        }).then((response) => response.json())
-            .then((json) => setData(json))
-            .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+        const extractions = await getExtractionLogs();
+        if (extractions) {
+            setData(extractions);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {

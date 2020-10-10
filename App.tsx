@@ -10,7 +10,7 @@ import SignUp from './Screens/SignUp';
 import { View } from 'react-native';
 import { AuthContext } from './Components/context';
 import AsyncStorage from '@react-native-community/async-storage';
-import { authLogin, authSignUp } from './api/AuthApi';
+import { authLogin, authSignUp } from './api/AuthAPI';
 
 const Stack = createStackNavigator();
 
