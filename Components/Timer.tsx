@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text } from 'react-native';
 import { View } from 'react-native';
+import moment from 'moment';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props {
     setExtractionTime: any,
@@ -8,15 +10,17 @@ export interface Props {
 
 export default function Timer(props: Props) {
     const { setExtractionTime } = props;
-    const [seconds, setSeconds] = useState<number>(0);
+    const [time, setTime] = useState<number>(0);
     const [localInterval, setLocalInterval] = useState<any>();
+    const duration = moment.duration(time);
+    const pad = (n: number) => n < 10 ? '0' + n : n;
 
     const startTime = () => {
         if (localInterval) {
             clearInterval(localInterval);
         }
-        setSeconds(0);
-        const interval = setInterval(() => (setSeconds(seconds => seconds + 1)), 1000);
+        setTime(0);
+        const interval = setInterval(() => (setTime(seconds => seconds + 1)), 1000);
         if (interval) {
             setLocalInterval(interval);
         }
@@ -24,20 +28,32 @@ export default function Timer(props: Props) {
 
     const stopTimer = () => {
         clearInterval(localInterval);
-        setExtractionTime(seconds);
+        setExtractionTime(time);
     };
 
 
     return (
         <View style={styles.container}>
-            <Text>{seconds}</Text>
             <View style={styles.row}>
-                <View style={styles.column}>
-                    <Button title="Start" onPress={startTime}></Button>
-                </View>
-                <View style={styles.column}>
-                    <Button title="Stop" onPress={stopTimer}></Button>
-                </View>
+                <Text style={styles.timerText}>{pad(duration.minutes())}:{pad(duration.milliseconds())}</Text>
+            </View>
+            <View style={styles.buttonRow}>
+                <TouchableOpacity
+                    onPress={startTime}
+                    style={styles.button}
+                    activeOpacity={0.7}>
+                    <View style={styles.buttonBorder}>
+                        <Text style={styles.buttonTitle}>Start</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={stopTimer}
+                    style={styles.button}
+                    activeOpacity={0.7}>
+                    <View style={styles.buttonBorder}>
+                        <Text style={styles.buttonTitle}>Stop</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -54,5 +70,37 @@ const styles = StyleSheet.create({
     },
     column: {
         flexDirection: 'column',
+    },
+    timerText: {
+        fontSize: 72,
+        fontWeight: '200',
+        color: '#583A25',
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+        paddingHorizontal: 40,
+    },
+    button: {
+        height: 80,
+        width: 80,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#583A25'
+    },
+    buttonTitle: {
+        fontSize: 18,
+        color: "#E6DDC5"
+    },
+    buttonBorder: {
+        height: 76,
+        width: 76,
+        borderRadius: 38,
+        borderWidth: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#E6DDC5',
     }
 })
