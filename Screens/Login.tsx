@@ -8,11 +8,7 @@ import { AuthContext } from '../Components/context';
 import { faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import * as Animatible from 'react-native-animatable';
 import * as _ from 'lodash';
-
-interface SignIn {
-    email: string;
-    password: string;
-}
+import { LoginPayload } from '../Models/Auth';
 
 export default function Login({ navigation }: any) {
     const [isValidEmail, setIsValidEmail] = useState(true);
@@ -20,7 +16,7 @@ export default function Login({ navigation }: any) {
     const { register, handleSubmit, setValue } = useForm();
     const { login } = useContext(AuthContext);
 
-    const onSubmit = async (data: SignIn) => {
+    const onSubmit = async (data: LoginPayload) => {
         if ((_.isNil(data.email) || _.isNil(data.password)) || (data.email.trim() === '' || data.password.trim() === '')) {
             Alert.alert('Password or email is missing');
             return;
@@ -50,7 +46,6 @@ export default function Login({ navigation }: any) {
             setIsValidPassword(false);
         }
     }
-
 
     useEffect(() => {
         register('email');
