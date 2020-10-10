@@ -11,6 +11,7 @@ import { View } from 'react-native';
 import { AuthContext } from './Components/context';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { authLogin, authSignUp } from './api/AuthApi';
 
 const Stack = createStackNavigator();
 
@@ -57,29 +58,10 @@ export default function App() {
 
   const authContext = useMemo(() => ({
     login: async (email: string, password: string) => {
-      await fetch('http://35.182.216.111:8080/auth/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        })
-      }).then((response) => response.json())
-        .then(async (responseJson: any) => {
-          if (responseJson && responseJson.user?.token) {
-            try {
-              await AsyncStorage.setItem('token', responseJson.user.token);
-            } catch (err) {
-              console.log(err);
-            }
-            dispatch({ type: 'LOGIN', id: responseJson.user.email, token: responseJson.user.token, userId: responseJson.user.id });
-          }
-        }).catch((error: any) => {
-          Alert.alert(error);
-        });
+      const value = await authLogin(email, password);
+      if (value) {
+        dispatch({ type: 'LOGIN', id: value.user.email, token: value.user.token, userId: value.user.id });
+      }
     },
     logout: async () => {
       try {
@@ -90,29 +72,8 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     signUp: async (email: string, password: string) => {
-      await fetch('http://35.182.216.111:8080/auth/', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        })
-      }).then((response) => response.json())
-        .then(async (responseJson: any) => {
-          if (responseJson && responseJson.user?.token) {
-            try {
-              await AsyncStorage.setItem('token', responseJson.user.token);
-            } catch (err) {
-              console.log(err);
-            }
-            dispatch({ type: 'SIGNUP', id: responseJson.user.email, token: responseJson.user.token, userId: responseJson.user.id });
-          }
-        }).catch((error: any) => {
-          Alert.alert(error);
-        });
+      const value = await authSignUp(email, password);
+      dispatch({ type: 'SIGNUP', id: value.user.email, token: value.user.token, userId: value.user.id });
     },
   }), []);
 

@@ -1,20 +1,57 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Text, TextInput } from 'react-native';
+import { Alert, Text, TextInput } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../Components/context';
 import { faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import * as Animatible from 'react-native-animatable';
+import * as _ from 'lodash';
+
+interface SignIn {
+    email: string;
+    password: string;
+}
 
 export default function Login({ navigation }: any) {
+    const [isValidEmail, setIsValidEmail] = useState(true);
+    const [isValidPassword, setIsValidPassword] = useState(true);
     const { register, handleSubmit, setValue } = useForm();
 
     const { login } = useContext(AuthContext);
 
-    const onSubmit = async (data: any) => {
-        login(data.email, data.password);
+    const onSubmit = async (data: SignIn) => {
+        if ((_.isNil(data.email) || _.isNil(data.password)) || (data.email.trim() === '' || data.password.trim() === '')) {
+            Alert.alert('Password or email is missing');
+            return;
+        }
+
+        if (isValidEmail && isValidPassword) {
+            login(data.email, data.password);
+            return;
+        }
     }
+
+    const handleValidUser = (email: string) => {
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (email.trim().length === 0) {
+            setIsValidEmail(true);
+        } else if (reg.test(email)) {
+            setIsValidEmail(true);
+        } else {
+            setIsValidEmail(false);
+        }
+    }
+
+    const handleValidPassword = (password: string) => {
+        if (password.trim().length === 0) {
+            setIsValidPassword(true);
+        } else if (password.trim().length < 8) {
+            setIsValidPassword(false);
+        }
+    }
+
 
     useEffect(() => {
         register('email');
@@ -33,8 +70,15 @@ export default function Login({ navigation }: any) {
                         style={styles.email}
                         onChangeText={text => {
                             setValue('email', text);
-                        }} />
+                        }}
+                        onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+                    />
                 </View>
+                {isValidEmail ? null :
+                    <Animatible.View animation="fadeInLeft" duration={500}>
+                        <Text style={styles.errorMsg}>Email is invalid.</Text>
+                    </Animatible.View>
+                }
                 <View style={styles.row}>
                     <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
@@ -44,8 +88,15 @@ export default function Login({ navigation }: any) {
                         secureTextEntry={true}
                         onChangeText={text => {
                             setValue('password', text);
-                        }} />
+                        }}
+                        onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
+                    />
                 </View>
+                {isValidPassword ? null :
+                    <Animatible.View animation="fadeInLeft" duration={500}>
+                        <Text style={styles.errorMsg}>Password is invalid.</Text>
+                    </Animatible.View>
+                }
             </View>
 
             <View style={styles.bottom}>
@@ -91,6 +142,9 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         height: 35,
         width: 300,
+    },
+    errorMsg: {
+        color: 'red',
     },
     icon: {
         marginLeft: 10,
