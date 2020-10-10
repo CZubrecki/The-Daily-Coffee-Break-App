@@ -9,7 +9,6 @@ import Login from './Screens/Login';
 import SignUp from './Screens/SignUp';
 import { View } from 'react-native';
 import { AuthContext } from './Components/context';
-import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { authLogin, authSignUp } from './api/AuthApi';
 
@@ -131,8 +130,7 @@ export default function App() {
                       title="Add"
                     />
                   ),
-                })
-                }
+                })}
               />
               <Stack.Screen
                 name="ExtractionLog"
