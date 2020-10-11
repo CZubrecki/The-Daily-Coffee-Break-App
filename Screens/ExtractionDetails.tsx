@@ -4,6 +4,8 @@ import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
 import { getExtractionLogById } from '../api/ExtractionAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 function determineBrewName(extractionRatio: number): string {
     let espressoType = '';
@@ -39,6 +41,14 @@ export default function ExtractionDetails({ route, navigation }: any) {
         }
     };
 
+    const ratings = (rating: number) => {
+        const cupsArray = [];
+        for (let i = 0; i < rating; i++) {
+            cupsArray.push(<FontAwesomeIcon key={i} icon={faCoffee} size={30} style={{ color: '#75604d' }} />);
+        }
+        return cupsArray;
+    }
+
     useEffect(() => {
         loadExtraction();
     }, [isLoading]);
@@ -63,11 +73,23 @@ export default function ExtractionDetails({ route, navigation }: any) {
                         </View>
                     </View>
                     <View style={styles.row}>
+                        <Text style={styles.dataText}>Grind Size: {extraction?.grindSize}</Text>
+                    </View>
+                    <View style={styles.row}>
                         <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.brewType}>{extractionRatio && determineBrewName(extractionRatio)}</Text>
                     </View>
+                    {extraction?.rating ?
+                        <>
+                            <Text style={styles.dataText}>Rating</Text>
+                            <View style={styles.ratingRow}>
+                                {ratings(extraction?.rating)}
+                            </View>
+                        </>
+                        : null
+                    }
                 </View>
             }
         </View>
@@ -110,5 +132,12 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 14,
         color: '#583A25',
+    },
+    ratingRow: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+        marginTop: 25,
+        paddingHorizontal: 80,
     }
 });
