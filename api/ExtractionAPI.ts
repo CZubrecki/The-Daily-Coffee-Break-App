@@ -32,9 +32,27 @@ export async function getExtractionLogById(_id: string): Promise<Extraction> {
     })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json)
             return json;
         });
+}
+
+export async function addExtraction(data: any, rating: number) {
+    const headers = await getHeaders();
+    const body = JSON.stringify({
+        weightIn: data.weightIn,
+        weightOut: data.weightOut,
+        extractionTime: data.extractionTime?.toString(),
+        grindSize: data.grindSize,
+        rating: rating,
+    });
+
+    return await fetch(`${BASE_URL}${EXTRACTION_LOGS}/add-extraction-log`, {
+        method: POST,
+        headers,
+        body,
+    }).catch((error: any) => {
+        console.log(error);
+    }).then((response) => response);
 }
 
 async function getHeaders(): Promise<any> {

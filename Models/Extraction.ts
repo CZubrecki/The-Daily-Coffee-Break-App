@@ -4,4 +4,6 @@ export interface Extraction {
     extractionDate: Date;
     weightIn: number;
     weightOut: number;
+    grindSize: string;
+    rating?: number
 }

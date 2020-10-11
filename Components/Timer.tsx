@@ -17,9 +17,8 @@ export default function Timer(props: Props) {
 
     const startTime = () => {
         if (localInterval) {
-            clearInterval(localInterval);
+            resetTime();
         }
-        setTime(0);
         const interval = setInterval(() => (setTime(seconds => seconds + 1)), 1000);
         if (interval) {
             setLocalInterval(interval);
@@ -31,6 +30,11 @@ export default function Timer(props: Props) {
         setExtractionTime(time);
     };
 
+    const resetTime = () => {
+        clearInterval(localInterval);
+        setTime(0);
+    }
+
 
     return (
         <View style={styles.container}>
@@ -38,6 +42,14 @@ export default function Timer(props: Props) {
                 <Text style={styles.timerText}>{pad(duration.minutes())}:{pad(duration.milliseconds())}</Text>
             </View>
             <View style={styles.buttonRow}>
+                <TouchableOpacity
+                    onPress={resetTime}
+                    style={styles.button}
+                    activeOpacity={0.7}>
+                    <View style={styles.buttonBorder}>
+                        <Text style={styles.buttonTitle}>Reset</Text>
+                    </View>
+                </TouchableOpacity>
                 <TouchableOpacity
                     onPress={startTime}
                     style={styles.button}
@@ -88,7 +100,7 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#583A25'
+        backgroundColor: '#75604d'
     },
     buttonTitle: {
         fontSize: 18,
