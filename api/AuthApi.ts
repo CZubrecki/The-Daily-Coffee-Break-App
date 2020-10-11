@@ -18,6 +18,9 @@ export async function authLogin(email: string, password: string): Promise<AuthRe
         body: generateBody(email, password),
     }).then((response) => response.json())
         .then(async (responseJson: any) => {
+            if (responseJson.message) {
+                throw (responseJson.message);
+            }
             if (responseJson && responseJson.user?.token) {
                 try {
                     await AsyncStorage.setItem(TOKEN, responseJson.user.token);
@@ -26,8 +29,6 @@ export async function authLogin(email: string, password: string): Promise<AuthRe
                     console.log(error);
                 }
             }
-        }).catch((error) => {
-            console.log(error);
         });
 }
 
@@ -46,8 +47,6 @@ export async function authSignUp(email: string, password: string): Promise<AuthR
                     console.log(error);
                 }
             }
-        }).catch((error: any) => {
-            console.log(error);
         });
 }
 

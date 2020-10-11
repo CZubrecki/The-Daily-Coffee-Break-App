@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Screens/Home';
 import ExtractionLog from './Screens/ExtractionLog';
-import { ActivityIndicator, Button } from 'react-native';
+import { ActivityIndicator, Alert, Button } from 'react-native';
 import ExtractionDetails from './Screens/ExtractionDetails';
 import Login from './Screens/Login';
 import SignUp from './Screens/SignUp';
@@ -57,9 +57,13 @@ export default function App() {
 
   const authContext = useMemo(() => ({
     login: async (email: string, password: string) => {
-      const value = await authLogin(email, password);
-      if (value) {
-        dispatch({ type: 'LOGIN', id: value.user.email, token: value.user.token, userId: value.user.id });
+      try {
+        const value = await authLogin(email, password);
+        if (value) {
+          dispatch({ type: 'LOGIN', id: value.user.email, token: value.user.token, userId: value.user.id });
+        }
+      } catch (error) {
+        Alert.alert(error);
       }
     },
     logout: async () => {
