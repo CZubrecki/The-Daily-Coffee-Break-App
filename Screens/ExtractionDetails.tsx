@@ -72,9 +72,11 @@ export default function ExtractionDetails({ route, navigation }: any) {
                             <Text style={styles.label}>Weight Out</Text>
                         </View>
                     </View>
-                    <View style={styles.row}>
-                        <Text style={styles.dataText}>Grind Size: {extraction?.grindSize}</Text>
-                    </View>
+                    {extraction?.grindSize ?
+                        <View style={styles.row}>
+                            <Text style={styles.dataText}>Grind Size: {extraction?.grindSize}</Text>
+                        </View> : null
+                    }
                     <View style={styles.row}>
                         <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
                     </View>
