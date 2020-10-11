@@ -100,15 +100,16 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{
           headerStyle: {
-            backgroundColor: '#e6ddc5',
+            backgroundColor: '#75604d',
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
-            color: '#583A25',
+            color: '#E6DDC5',
           },
           headerBackTitleStyle: {
-            color: '#583A25',
+            color: '#E6DDC5',
           },
-          headerTintColor: '#583A25',
+          headerTintColor: '#E6DDC5',
         }}>
           {loginState.token && loginState.email ?
             <>
@@ -118,14 +119,14 @@ export default function App() {
                 options={({ navigation, route }) => ({
                   headerLeft: () => (
                     <Button
-                      color={'#583A25'}
+                      color={'#E6DDC5'}
                       onPress={() => authContext.logout()}
                       title="Logout"
                     />
                   ),
                   headerRight: () => (
                     <Button
-                      color={'#583A25'}
+                      color={'#E6DDC5'}
                       onPress={() => navigation.navigate('ExtractionLog')}
                       title="Add"
                     />

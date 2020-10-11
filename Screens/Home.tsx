@@ -56,7 +56,7 @@ export default function Home({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6DDC5',
+        backgroundColor: '#75604d',
     },
     list: {
         minWidth: '100%',

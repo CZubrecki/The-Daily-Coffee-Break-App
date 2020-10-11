@@ -58,7 +58,7 @@ export default function Login({ navigation }: any) {
                 <View style={styles.row}>
                     <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
                     <TextInput
-                        placeholderTextColor="#583A25"
+                        placeholderTextColor="#E6DDC5"
                         autoCapitalize="none"
                         placeholder='Email'
                         style={styles.email}
@@ -77,7 +77,7 @@ export default function Login({ navigation }: any) {
                     <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
                         placeholder='Password'
-                        placeholderTextColor="#583A25"
+                        placeholderTextColor="#E6DDC5"
                         style={styles.password}
                         secureTextEntry={true}
                         onChangeText={text => {
@@ -113,7 +113,7 @@ export default function Login({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6DDC5',
+        backgroundColor: '#75604d',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         margin: 10,
-        borderColor: '#583A25',
+        borderColor: '#E6DDC5',
         height: 35,
         width: 300,
         borderWidth: 1,
@@ -134,20 +134,22 @@ const styles = StyleSheet.create({
     },
     email: {
         paddingLeft: 10,
-        height: 35,
+        height: 50,
         width: 300,
+        color: '#E6DDC5',
     },
     errorMsg: {
         color: 'red',
     },
     icon: {
         marginLeft: 10,
-        color: '#583A25',
+        color: '#E6DDC5',
     },
     password: {
         paddingLeft: 10,
-        height: 35,
+        height: 50,
         width: 300,
+        color: '#E6DDC5',
     },
     bottom: {
         flex: 1,
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
         marginBottom: 36
     },
     signIn: {
-        backgroundColor: '#583A25',
+        backgroundColor: '#E6DDC5',
         width: 300,
         height: 40,
         borderRadius: 20,
@@ -163,11 +165,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInText: {
-        color: '#e6ddc5',
+        color: '#75604d',
         fontSize: 24,
     },
     signUp: {
-        color: '#583A25',
+        color: '#E6DDC5',
         paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',

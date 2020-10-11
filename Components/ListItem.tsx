@@ -43,7 +43,7 @@ export default function ListItem(props: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#3f2a14',
+        backgroundColor: '#E6DDC5',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
@@ -63,17 +63,17 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: 16,
-        color: '#e6ddc5',
+        color: '#75604d',
     },
     item: {
         flexDirection: 'row',
     },
     title: {
         fontSize: 26,
-        color: '#e6ddc5',
+        color: '#75604d',
     },
     subTitle: {
         fontSize: 12,
-        color: '#e6ddc5',
+        color: '#75604d',
     }
 });

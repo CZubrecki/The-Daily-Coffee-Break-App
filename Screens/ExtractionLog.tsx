@@ -110,7 +110,7 @@ export default function ExtractionLog({ navigation }: any) {
                 {cups.map((cup, index) => (
                     <TouchableOpacity
                         key={index}
-                        activeOpacity={0.2}
+                        activeOpacity={1}
                         onPress={() => handleStateChange(index)}>
                         <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
                     </TouchableOpacity>))}
