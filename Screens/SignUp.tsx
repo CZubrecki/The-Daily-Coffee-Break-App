@@ -45,6 +45,7 @@ export default function SignUp() {
 
     const handleValidPassword = (password: string) => {
         if (password.trim().length === 0) {
+            setPasswordsMatch(true);
             setIsValidPassword(true);
         } else if (password.trim().length < 8) {
             setIsValidPassword(false);
