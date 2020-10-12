@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native'
-import { Text, View, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-community/async-storage';
 import Timer from '../Components/Timer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +16,7 @@ interface Cup {
 export default function ExtractionLog({ navigation }: any) {
     const { register, handleSubmit, setValue } = useForm();
     const [cups, setCups] = useState<Cup[]>([]);
+    const [rating, setRating] = useState<number>(0);
 
     const onSubmit = async (data: any) => {
         let rating: number = 0;
@@ -55,16 +55,66 @@ export default function ExtractionLog({ navigation }: any) {
     };
 
     const handleStateChange = (index: number) => {
-        const data = [...cups];
-        if (index === 0 || (index > 0 && data[index - 1].isSelected)) {
+        let data = [...cups];
+
+        if (index === 0 && rating === 1) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
                 color: !data[index].isSelected ? '#75604d' : '#b8ad99',
             };
+            updateRating(data);
+            setCups(data);
+            return data;
         }
+
+        if (index === 0 && rating === 0) {
+            data[index] = {
+                ...data[index],
+                isSelected: !data[index].isSelected,
+                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+            };
+            updateRating(data);
+            setCups(data);
+            return data;
+        }
+
+        if (index < rating) {
+            data = clearRatings(data);
+        }
+
+        for (let i = 0; i <= index; i++) {
+            data[i] = {
+                ...data[index],
+                isSelected: !data[index].isSelected,
+                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+            }
+        }
+
+        updateRating(data);
         setCups(data);
-        return cups;
+        return data;
+    };
+
+    const clearRatings = (data: Cup[]): Cup[] => {
+        for (let i = 0; i < data.length; i++) {
+            data[i] = {
+                ...data[i],
+                isSelected: false,
+                color: '#b8ad99',
+            }
+        }
+        return data;
+    }
+
+    const updateRating = (data: Cup[]) => {
+        let totalSelected = 0;
+        data.forEach(cup => {
+            if (cup.isSelected) {
+                totalSelected++;
+            }
+        });
+        setRating(totalSelected);
     };
 
     return (
@@ -135,7 +185,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     fields: {
-        marginTop: '25%',
         alignItems: 'center',
     },
     row: {
@@ -169,7 +218,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'stretch',
         justifyContent: 'space-between',
-        marginTop: 100,
+        marginTop: 50,
         paddingHorizontal: 80,
     },
     grindSize: {
