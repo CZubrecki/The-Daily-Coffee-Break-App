@@ -78,8 +78,12 @@ export default function App() {
       dispatch({ type: 'LOGOUT' });
     },
     signUp: async (email: string, password: string) => {
-      const value = await authSignUp(email, password);
-      dispatch({ type: 'SIGNUP', id: value.user.email, token: value.user.token, userId: value.user.id });
+      try {
+        const value = await authSignUp(email, password);
+        dispatch({ type: 'SIGNUP', id: value.user.email, token: value.user.token, userId: value.user.id });
+      } catch (error) {
+        Alert.alert(error);
+      }
     },
   }), []);
 
