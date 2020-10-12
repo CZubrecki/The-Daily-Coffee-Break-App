@@ -11,6 +11,9 @@ import { View } from 'react-native';
 import { AuthContext } from './Components/context';
 import AsyncStorage from '@react-native-community/async-storage';
 import { authLogin, authSignUp } from './api/AuthAPI';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -122,18 +125,14 @@ export default function App() {
                 component={Home}
                 options={({ navigation, route }) => ({
                   headerLeft: () => (
-                    <Button
-                      color={'#E6DDC5'}
-                      onPress={() => authContext.logout()}
-                      title="Logout"
-                    />
+                    <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => authContext.logout()}>
+                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#E6DDC5' }} />
+                    </TouchableOpacity>
                   ),
                   headerRight: () => (
-                    <Button
-                      color={'#E6DDC5'}
-                      onPress={() => navigation.navigate('ExtractionLog')}
-                      title="Add"
-                    />
+                    <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate('ExtractionLog')}>
+                      <FontAwesomeIcon size={20} icon={faPlus} style={{ color: '#E6DDC5' }} />
+                    </TouchableOpacity>
                   ),
                 })}
               />

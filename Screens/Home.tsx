@@ -1,8 +1,9 @@
 import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
 import { Extraction } from '../Models/Extraction';
 import { getExtractionLogs } from '../api/ExtractionAPI';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Home({ navigation }: any) {
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -16,6 +17,15 @@ export default function Home({ navigation }: any) {
         }
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            handleRefresh();
+            return () => {
+                setLoading(false);
+            };
+        }, [isLoading])
+    );
+
     useEffect(() => {
         handleRefresh();
     }, [isLoading]);
@@ -27,6 +37,7 @@ export default function Home({ navigation }: any) {
             weightOut: item.weightOut,
             extractionTime: item.extractionTime,
             extractionDate: item.extractionDate,
+            grindSize: '',
         }} navigation={navigation} />
     );
 
