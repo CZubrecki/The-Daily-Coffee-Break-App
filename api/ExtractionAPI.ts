@@ -44,6 +44,9 @@ export async function addExtraction(data: any, rating: number) {
         extractionTime: data.extractionTime?.toString(),
         grindSize: data.grindSize,
         rating: rating,
+        beans: data.beans,
+        shotTemperature: data.shotTemperature,
+        notes: data.notes
     });
 
     return await fetch(`${BASE_URL}${EXTRACTION_LOGS}/add-extraction-log`, {

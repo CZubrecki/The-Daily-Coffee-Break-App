@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native'
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
-import { TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Timer from '../Components/Timer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { addExtraction } from '../api/ExtractionAPI';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Cup {
     isSelected: boolean;
@@ -37,6 +38,9 @@ export default function ExtractionLog({ navigation }: any) {
         register('weightOut');
         register('extractionTime');
         register('grindSize');
+        register('beans');
+        register('shotTemperature');
+        register('notes');
     }, [register]);
 
     const initalizeCups = () => {
@@ -119,60 +123,88 @@ export default function ExtractionLog({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.fields}>
-                    <View style={styles.row}>
-                        <View style={styles.column}>
-                            <TextInput
-                                keyboardType='numeric'
-                                style={styles.inputField}
-                                onChangeText={text => {
-                                    setValue('weightIn', text);
-                                }} />
-                            <Text style={styles.label}>Weight In</Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.container}>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                        <View style={styles.fields}>
+                            <View style={styles.row}>
+                                <View style={styles.column}>
+                                    <TextInput
+                                        keyboardType='numeric'
+                                        style={styles.inputField}
+                                        onChangeText={text => {
+                                            setValue('weightIn', text);
+                                        }} />
+                                    <Text style={styles.label}>Weight In</Text>
+                                </View>
+                                <View style={styles.column}>
+                                    <TextInput
+                                        keyboardType='numeric'
+                                        style={styles.inputField}
+                                        onChangeText={text => {
+                                            setValue('weightOut', text);
+                                        }} />
+                                    <Text style={styles.label}>Weight Out</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.column}>
+                                    <TextInput
+                                        style={styles.grindSize}
+                                        onChangeText={text => {
+                                            setValue('beans', text);
+                                        }} />
+                                    <Text style={styles.label}>Beans</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.column}>
+                                    <TextInput
+                                        style={styles.grindSize}
+                                        keyboardType='numeric'
+                                        onChangeText={text => {
+                                            setValue('shotTemperature', text);
+                                        }} />
+                                    <Text style={styles.label}>Shot Temperature</Text>
+                                </View>
+                            </View>
                         </View>
-                        <View style={styles.column}>
+                    </TouchableWithoutFeedback>
+                    <View style={styles.row}>
+                        <Timer setExtractionTime={setExtractionTime} />
+                    </View>
+                    <View style={styles.ratingRow}>
+                        {cups.map((cup, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                activeOpacity={1}
+                                onPress={() => handleStateChange(index)}>
+                                <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
+                            </TouchableOpacity>))}
+                    </View>
+                    <Text style={styles.label}>Rating</Text>
+                    <View>
+                        <View style={styles.notesContainer}>
                             <TextInput
-                                keyboardType='numeric'
-                                style={styles.inputField}
+                                placeholder='Notes...'
+                                style={styles.notes}
+                                maxLength={150}
+                                multiline={true}
+                                numberOfLines={5}
                                 onChangeText={text => {
-                                    setValue('weightOut', text);
+                                    setValue('notes', text);
                                 }} />
-                            <Text style={styles.label}>Weight Out</Text>
                         </View>
                     </View>
-                    <View style={styles.row}>
-                        <View style={styles.column}>
-                            <TextInput
-                                style={styles.grindSize}
-                                onChangeText={text => {
-                                    setValue('grindSize', text);
-                                }} />
-                            <Text style={styles.label}>Grind Size</Text>
-                        </View>
+                    <View style={styles.bottom}>
+                        <TouchableOpacity
+                            style={styles.submitButton}
+                            onPress={handleSubmit(onSubmit)}>
+                            <Text style={styles.submitButtonText}> Save </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.row}>
-                <Timer setExtractionTime={setExtractionTime} />
-            </View>
-            <View style={styles.ratingRow}>
-                {cups.map((cup, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        activeOpacity={1}
-                        onPress={() => handleStateChange(index)}>
-                        <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
-                    </TouchableOpacity>))}
-            </View>
-            <Text style={styles.label}>Rating</Text>
-            <View style={styles.bottom}>
-                <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.submitButtonText}> Save </Text>
-                </TouchableOpacity>
-            </View>
+            </ScrollView>
         </View>
     );
 }
@@ -188,17 +220,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     row: {
+        justifyContent: 'center',
         flexDirection: 'row',
+        alignItems: 'center',
     },
     column: {
         flexDirection: 'column',
-        margin: 25,
+        marginTop: 20,
+        marginHorizontal: 20,
         alignItems: 'center',
-    },
-    inputAndLabel: {
-        justifyContent: 'center',
-        alignContent: 'center',
-        textAlign: 'center',
     },
     inputField: {
         borderColor: '#583A25',
@@ -218,7 +248,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'stretch',
         justifyContent: 'space-between',
-        marginTop: 50,
+        marginTop: 20,
         paddingHorizontal: 80,
     },
     grindSize: {
@@ -231,7 +261,23 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: '#583A25',
     },
+    notesContainer: {
+        marginTop: 25,
+        width: 300,
+        height: 105,
+        borderColor: '#583A25',
+        borderWidth: 2,
+        borderRadius: 15,
+    },
+    notes: {
+        margin: 10,
+        width: 295,
+        height: 100,
+        fontSize: 12,
+        color: '#583A25',
+    },
     bottom: {
+        paddingTop: 50,
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36
