@@ -61,7 +61,14 @@ export default function ExtractionLog({ navigation }: any) {
     const handleStateChange = (index: number) => {
         let data = [...cups];
 
-        if (index === 0 && rating === 1) {
+        if (index === (rating - 1)) {
+            data = clearRatings(data);
+            updateRating(data);
+            setCups(data);
+            return;
+        }
+
+        if ((index === 0 && rating === 1)) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
@@ -83,7 +90,7 @@ export default function ExtractionLog({ navigation }: any) {
             return data;
         }
 
-        if (index < rating) {
+        if ((index < rating)) {
             data = clearRatings(data);
         }
 

@@ -5,5 +5,8 @@ export interface Extraction {
     weightIn: number;
     weightOut: number;
     grindSize: string;
-    rating?: number
+    rating?: number;
+    beans?: string;
+    shotTemperature?: number;
+    notes?: string;
 }

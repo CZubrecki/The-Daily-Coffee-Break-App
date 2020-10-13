@@ -58,6 +58,9 @@ export default function ExtractionDetails({ route, navigation }: any) {
             {isLoading ? <ActivityIndicator /> :
                 <View style={styles.dataContainer}>
                     <Text style={styles.date}>{moment(extraction?.extractionDate).format(dateFormat)}</Text>
+                    <View style={styles.dataRow}>
+                        {extraction?.beans ? <Text style={styles.dataLabel}>{extraction?.beans}</Text> : null}
+                    </View>
                     <View style={styles.row}>
                         <View style={styles.column}>
                             <Text style={styles.dataText}>{extraction?.extractionTime}s</Text>
@@ -72,11 +75,12 @@ export default function ExtractionDetails({ route, navigation }: any) {
                             <Text style={styles.label}>Weight Out</Text>
                         </View>
                     </View>
-                    {extraction?.grindSize ?
-                        <View style={styles.row}>
-                            <Text style={styles.dataText}>Grind Size: {extraction?.grindSize}</Text>
-                        </View> : null
-                    }
+                    <View style={styles.dataRow}>
+                        {extraction?.grindSize ? <Text><Text style={styles.dataLabel}>Grind Size:</Text><Text style={styles.label}>{extraction?.grindSize}</Text></Text> : null}
+                    </View>
+                    <View style={styles.dataRow}>
+                        {extraction?.shotTemperature ? <Text><Text style={styles.dataLabel}>Shot Temperature:</Text><Text style={styles.temperatureValue}> {extraction?.shotTemperature}˚C</Text></Text> : null}
+                    </View>
                     <View style={styles.row}>
                         <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
                     </View>
@@ -92,6 +96,9 @@ export default function ExtractionDetails({ route, navigation }: any) {
                         </>
                         : null
                     }
+                    <View style={styles.notesRow}>
+                        {extraction?.notes ? <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text> : null}
+                    </View>
                 </View>
             }
         </View>
@@ -113,7 +120,13 @@ const styles = StyleSheet.create({
     row: {
         justifyContent: 'center',
         flexDirection: 'row',
-        padding: 20,
+        paddingHorizontal: 20,
+    },
+    dataRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 5,
+        marginHorizontal: 15,
     },
     column: {
         flexDirection: 'column',
@@ -134,6 +147,22 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 14,
         color: '#583A25',
+    },
+    dataLabel: {
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#583A25',
+    },
+    temperatureValue: {
+        fontSize: 20,
+        fontWeight: '400',
+        color: '#583A25',
+    },
+    notesRow: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        marginHorizontal: 20,
+        marginTop: 20,
     },
     ratingRow: {
         flexDirection: 'row',

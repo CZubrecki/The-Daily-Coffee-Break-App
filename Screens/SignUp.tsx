@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 10,
         borderColor: '#E6DDC5',
-        height: 35,
+        height: 50,
         width: 300,
         borderWidth: 1,
         borderRadius: 20,
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         height: 35,
         width: 300,
+        fontSize: 20,
         color: '#E6DDC5',
     },
     icon: {
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
         color: 'red',
     },
     password: {
+        fontSize: 20,
         paddingLeft: 10,
         height: 35,
         width: 300,
