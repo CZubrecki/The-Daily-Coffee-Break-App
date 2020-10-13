@@ -161,6 +161,16 @@ export default function ExtractionLog({ navigation }: any) {
                                 <View style={styles.column}>
                                     <TextInput
                                         style={styles.grindSize}
+                                        onChangeText={text => {
+                                            setValue('grindSize', text);
+                                        }} />
+                                    <Text style={styles.label}>Grind Size</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.column}>
+                                    <TextInput
+                                        style={styles.grindSize}
                                         keyboardType='numeric'
                                         onChangeText={text => {
                                             setValue('shotTemperature', text);
