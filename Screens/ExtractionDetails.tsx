@@ -96,8 +96,10 @@ export default function ExtractionDetails({ route, navigation }: any) {
                         </>
                         : null
                     }
-                    <View style={styles.notesRow}>
-                        {extraction?.notes ? <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text> : null}
+                    <View style={styles.notesBorder}>
+                        <View style={styles.notesRow}>
+                            {extraction?.notes ? <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text> : null}
+                        </View>
                     </View>
                 </View>
             }
@@ -161,8 +163,13 @@ const styles = StyleSheet.create({
     notesRow: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginHorizontal: 20,
-        marginTop: 20,
+        margin: 20,
+    },
+    notesBorder: {
+        borderWidth: 2,
+        borderColor: '#583A25',
+        borderRadius: 20,
+        margin: 10,
     },
     ratingRow: {
         flexDirection: 'row',
