@@ -26,7 +26,7 @@ function determineBrewName(extractionRatio: number): string {
     return espressoType;
 }
 
-export default function ExtractionDetails({ route, navigation }: any) {
+export default function ExtractionDetails({ route }: any) {
     const { _id } = route.params;
     const [isLoading, setLoading] = useState(true);
     const [extraction, setExtraction] = useState<Extraction>();
@@ -105,7 +105,7 @@ export default function ExtractionDetails({ route, navigation }: any) {
                     </View>
                 </View>
             }
-        </View>
+        </View >
     );
 }
 
