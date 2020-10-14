@@ -7,19 +7,31 @@ import { getExtractionLogById } from '../api/ExtractionAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-function determineBrewName(extractionRatio: number): string {
-    let espressoType = '';
+function determineBrewName(extractionRatio: number): any {
+    let espressoType = {
+        title: '',
+        body: '',
+    };
     switch (true) {
         case (extractionRatio <= 1.5): {
-            espressoType = 'Ristretto (1:1 - 1:1.5): A viscous with a heavy body, but lacking in clarity. This tighter brew ratio plays to the strengths of a darker-roasted, low-grown coffee that has chocolatey, caramel characteristics.';
+            espressoType = {
+                title: 'Ristretto (1:1 - 1:1.5):',
+                body: 'A viscous with a heavy body, but lacking in clarity. This tighter brew ratio plays to the strengths of a darker-roasted, low-grown coffee that has chocolatey, caramel characteristics.'
+            };
             break;
         }
         case (extractionRatio <= 2): {
-            espressoType = 'Normale (1:1.5 - 1:2): The current norm in specialty coffee shops across the US, Europe and Australia trend toward a normale espresso range somewhere between a 1:1.5 or 1:2 ratio.';
+            espressoType = {
+                title: 'Normale (1:1.5 - 1:2):',
+                body: 'The current norm in specialty coffee shops across the US, Europe and Australia trend toward a normale espresso range somewhere between a 1:1.5 or 1:2 ratio.'
+            };
             break;
         }
         default: {
-            espressoType = 'Lungo (1:3 - 1:4): By extending the brew ratio, the clarity of the coffee increases, body and viscosity decrease, and more individual notes of coffee become evident and easier to pick out';
+            espressoType = {
+                title: 'Lungo (1:3 - 1:4):',
+                body: 'By extending the brew ratio, the clarity of the coffee increases, body and viscosity decrease, and more individual notes of coffee become evident and easier to pick out',
+            };
             break;
         }
     }
@@ -86,7 +98,10 @@ export default function ExtractionDetails({ route }: any) {
                     </View>
                     <View style={styles.extractionRowBorder}>
                         <View style={styles.extractionRow}>
-                            <Text style={styles.brewType}>{extractionRatio && determineBrewName(extractionRatio)}</Text>
+                            <Text style={styles.brewTypeSection}>
+                                <Text style={styles.brewTypeTitle}>{extractionRatio && determineBrewName(extractionRatio).title}</Text>
+                                <Text style={styles.brewType}> {extractionRatio && determineBrewName(extractionRatio).body}</Text>
+                            </Text>
                         </View>
                     </View>
                     {extraction?.rating ?
@@ -98,11 +113,13 @@ export default function ExtractionDetails({ route }: any) {
                         </>
                         : null
                     }
-                    <View style={styles.notesBorder}>
-                        <View style={styles.notesRow}>
-                            {extraction?.notes ? <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text> : null}
-                        </View>
-                    </View>
+                    {extraction?.notes ?
+                        <View style={styles.notesBorder}>
+                            <View style={styles.notesRow}>
+                                <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text>
+                            </View>
+                        </View> : null
+                    }
                 </View>
             }
         </View >
@@ -162,9 +179,17 @@ const styles = StyleSheet.create({
         color: '#583A25',
         textAlign: 'center',
     },
-    brewType: {
+    brewTypeSection: {
         flex: 1,
         flexWrap: 'wrap',
+    },
+    brewTypeTitle: {
+        fontSize: 14,
+        color: '#583A25',
+        textAlign: 'center',
+        fontWeight: '600',
+    },
+    brewType: {
         fontSize: 14,
         color: '#583A25',
         textAlign: 'center',
