@@ -59,7 +59,7 @@ export default function ExtractionDetails({ route, navigation }: any) {
                 <View style={styles.dataContainer}>
                     <Text style={styles.date}>{moment(extraction?.extractionDate).format(dateFormat)}</Text>
                     <View style={styles.dataRow}>
-                        {extraction?.beans ? <Text style={styles.dataLabel}>{extraction?.beans}</Text> : null}
+                        {extraction?.beans ? <Text style={styles.beansLabel}>{extraction?.beans}</Text> : null}
                     </View>
                     <View style={styles.row}>
                         <View style={styles.column}>
@@ -76,16 +76,18 @@ export default function ExtractionDetails({ route, navigation }: any) {
                         </View>
                     </View>
                     <View style={styles.dataRow}>
-                        {extraction?.grindSize ? <Text><Text style={styles.dataLabel}>Grind Size:</Text><Text style={styles.label}>{extraction?.grindSize}</Text></Text> : null}
+                        {extraction?.grindSize ? <Text><Text style={styles.dataLabel}>Grind Size:</Text><Text style={styles.temperatureValue}> {extraction?.grindSize}</Text></Text> : null}
                     </View>
                     <View style={styles.dataRow}>
                         {extraction?.shotTemperature ? <Text><Text style={styles.dataLabel}>Shot Temperature:</Text><Text style={styles.temperatureValue}> {extraction?.shotTemperature}˚C</Text></Text> : null}
                     </View>
-                    <View style={styles.row}>
+                    <View style={styles.extractionRowLabel}>
                         <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
                     </View>
-                    <View style={styles.row}>
-                        <Text style={styles.brewType}>{extractionRatio && determineBrewName(extractionRatio)}</Text>
+                    <View style={styles.extractionRowBorder}>
+                        <View style={styles.extractionRow}>
+                            <Text style={styles.brewType}>{extractionRatio && determineBrewName(extractionRatio)}</Text>
+                        </View>
                     </View>
                     {extraction?.rating ?
                         <>
@@ -123,6 +125,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         paddingHorizontal: 20,
+    },
+    extractionRowLabel: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingTop: 20,
+    },
+    extractionRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 10,
+    },
+    extractionRowBorder: {
+        borderWidth: 2,
+        borderColor: '#583A25',
+        borderRadius: 20,
+        marginHorizontal: 10,
+        marginVertical: 15,
+    },
+    beansLabel: {
+        color: '#583A25',
+        fontSize: 28,
     },
     dataRow: {
         justifyContent: 'center',
@@ -177,5 +200,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 25,
         paddingHorizontal: 80,
+        paddingBottom: 20,
     }
 });
