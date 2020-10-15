@@ -9,7 +9,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { addExtraction } from '../api/ExtractionAPI';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-interface Cup {
+export interface Cup {
     isSelected: boolean;
     color: string;
 }
