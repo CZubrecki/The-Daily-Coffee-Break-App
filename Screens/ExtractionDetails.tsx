@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { View, StyleSheet, Text, ActivityIndicator, Modal, Alert, TextInput } from "react-native";
 import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
 import { getExtractionLogById } from '../api/ExtractionAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faCoffee, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import Rating from '../Components/Rating';
+import { useForm } from 'react-hook-form';
+import { updateExtractionLog } from '../api/ExtractionAPI';
 
 function determineBrewName(extractionRatio: number): any {
     let espressoType = {
@@ -38,19 +42,50 @@ function determineBrewName(extractionRatio: number): any {
     return espressoType;
 }
 
-export default function ExtractionDetails({ route }: any) {
+export default function ExtractionDetails({ navigation, route }: any) {
     const { _id } = route.params;
     const [isLoading, setLoading] = useState(true);
+    const [rating, setRating] = useState(0);
     const [extraction, setExtraction] = useState<Extraction>();
     const dateFormat = 'h:mm a YYYY MMMM D';
     const extractionRatio = extraction && _.round(extraction.weightOut / extraction.weightIn);
+    const { register, handleSubmit, setValue, getValues } = useForm();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity style={{ marginRight: 15 }} onPress={() => setModalVisible(!modalVisible)}>
+                    <FontAwesomeIcon icon={faEdit} style={styles.editDetails} size={20}></FontAwesomeIcon>
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
 
     const loadExtraction = async () => {
         const extractionData = await getExtractionLogById(_id);
         if (extractionData) {
             setExtraction(extractionData);
+            setValue('notes', extractionData.notes);
             setLoading(false);
         }
+
+    };
+
+    const onSubmit = async (data: any) => {
+        const notes = data.notes || null;
+        try {
+            setLoading(true);
+            setModalVisible(!modalVisible);
+            await updateExtractionLog(_id, rating, notes);
+            await loadExtraction();
+        } catch (error) {
+            Alert.alert(error);
+        }
+    }
+
+    const getRating = (rating: number) => {
+        setRating(rating);
     };
 
     const ratings = (rating: number) => {
@@ -62,65 +97,104 @@ export default function ExtractionDetails({ route }: any) {
     }
 
     useEffect(() => {
+        register('notes');
         loadExtraction();
-    }, [isLoading]);
+    }, [isLoading, register]);
 
     return (
         <View style={styles.container}>
             {isLoading ? <ActivityIndicator /> :
-                <View style={styles.dataContainer}>
-                    <Text style={styles.date}>{moment(extraction?.extractionDate).format(dateFormat)}</Text>
-                    <View style={styles.dataRow}>
-                        {extraction?.beans ? <Text style={styles.beansLabel}>{extraction?.beans}</Text> : null}
-                    </View>
-                    <View style={styles.row}>
-                        <View style={styles.column}>
-                            <Text style={styles.dataText}>{extraction?.extractionTime}s</Text>
-                            <Text style={styles.label}>Extraction Time</Text>
-                        </View>
-                        <View style={styles.column}>
-                            <Text style={styles.dataText}>{extraction?.weightIn}g</Text>
-                            <Text style={styles.label}>Weight In</Text>
-                        </View>
-                        <View style={styles.column}>
-                            <Text style={styles.dataText}>{extraction?.weightOut}g</Text>
-                            <Text style={styles.label}>Weight Out</Text>
-                        </View>
-                    </View>
-                    <View style={styles.dataRow}>
-                        {extraction?.grindSize ? <Text><Text style={styles.dataLabel}>Grind Size:</Text><Text style={styles.temperatureValue}> {extraction?.grindSize}</Text></Text> : null}
-                    </View>
-                    <View style={styles.dataRow}>
-                        {extraction?.shotTemperature ? <Text><Text style={styles.dataLabel}>Shot Temperature:</Text><Text style={styles.temperatureValue}> {extraction?.shotTemperature}˚C</Text></Text> : null}
-                    </View>
-                    <View style={styles.extractionRowLabel}>
-                        <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
-                    </View>
-                    <View style={styles.extractionRowBorder}>
-                        <View style={styles.extractionRow}>
-                            <Text style={styles.brewTypeSection}>
-                                <Text style={styles.brewTypeTitle}>{extractionRatio && determineBrewName(extractionRatio).title}</Text>
-                                <Text style={styles.brewType}> {extractionRatio && determineBrewName(extractionRatio).body}</Text>
-                            </Text>
-                        </View>
-                    </View>
-                    {extraction?.rating ?
-                        <>
-                            <Text style={styles.dataText}>Rating</Text>
-                            <View style={styles.ratingRow}>
-                                {ratings(extraction?.rating)}
+                <>
+                    <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                    }}>
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={styles.label}>Rating</Text>
+                                <Rating propRating={extraction?.rating} ratingCallback={getRating} />
+                                <View style={styles.notesContainer}>
+                                    <TextInput
+                                        placeholder='Notes...'
+                                        style={styles.notes}
+                                        maxLength={150}
+                                        multiline={true}
+                                        numberOfLines={5}
+                                        defaultValue={getValues('notes')}
+                                        onChangeText={text => {
+                                            setValue('notes', text);
+                                        }} />
+                                </View>
+                                <View style={styles.buttonContainer}>
+                                    <TouchableOpacity
+                                        style={styles.submitButton}
+                                        onPress={handleSubmit(onSubmit)}>
+                                        <Text style={styles.submitButtonText}> Save </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setModalVisible(!modalVisible);
+                                    }}
+                                >
+                                    <Text>Cancel</Text>
+                                </TouchableOpacity>
                             </View>
-                        </>
-                        : null
-                    }
-                    {extraction?.notes ?
-                        <View style={styles.notesBorder}>
-                            <View style={styles.notesRow}>
-                                <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text>
+                        </View>
+                    </Modal>
+                    <View style={styles.dataContainer}>
+                        <Text style={styles.date}>{moment(extraction?.extractionDate).format(dateFormat)}</Text>
+                        <View style={styles.dataRow}>
+                            {extraction?.beans ? <Text style={styles.beansLabel}>{extraction?.beans}</Text> : null}
+                        </View>
+                        <View style={styles.row}>
+                            <View style={styles.column}>
+                                <Text style={styles.dataText}>{extraction?.extractionTime}s</Text>
+                                <Text style={styles.label}>Extraction Time</Text>
                             </View>
-                        </View> : null
-                    }
-                </View>
+                            <View style={styles.column}>
+                                <Text style={styles.dataText}>{extraction?.weightIn}g</Text>
+                                <Text style={styles.label}>Weight In</Text>
+                            </View>
+                            <View style={styles.column}>
+                                <Text style={styles.dataText}>{extraction?.weightOut}g</Text>
+                                <Text style={styles.label}>Weight Out</Text>
+                            </View>
+                        </View>
+                        <View style={styles.dataRow}>
+                            {extraction?.grindSize ? <Text><Text style={styles.dataLabel}>Grind Size:</Text><Text style={styles.temperatureValue}> {extraction?.grindSize}</Text></Text> : null}
+                        </View>
+                        <View style={styles.dataRow}>
+                            {extraction?.shotTemperature ? <Text><Text style={styles.dataLabel}>Shot Temperature:</Text><Text style={styles.temperatureValue}> {extraction?.shotTemperature}˚C</Text></Text> : null}
+                        </View>
+                        <View style={styles.extractionRowLabel}>
+                            <Text style={styles.dataText}> Extraction Ratio: 1:{extractionRatio}</Text>
+                        </View>
+                        <View style={styles.extractionRowBorder}>
+                            <View style={styles.extractionRow}>
+                                <Text style={styles.brewTypeSection}>
+                                    <Text style={styles.brewTypeTitle}>{extractionRatio && determineBrewName(extractionRatio).title}</Text>
+                                    <Text style={styles.brewType}> {extractionRatio && determineBrewName(extractionRatio).body}</Text>
+                                </Text>
+                            </View>
+                        </View>
+                        {extraction?.rating ?
+                            <>
+                                <Text style={styles.dataText}>Rating</Text>
+                                <View style={styles.ratingRow}>
+                                    {ratings(extraction?.rating)}
+                                </View>
+                            </>
+                            : null
+                        }
+                        {extraction?.notes ?
+                            <View style={styles.notesBorder}>
+                                <View style={styles.notesRow}>
+                                    <Text><Text style={styles.dataLabel}>Notes:</Text><Text style={styles.label}> {extraction?.notes}</Text></Text>
+                                </View>
+                            </View> : null
+                        }
+                    </View>
+                </>
             }
         </View >
     );
@@ -226,5 +300,63 @@ const styles = StyleSheet.create({
         marginTop: 25,
         paddingHorizontal: 80,
         paddingBottom: 20,
+    },
+    editDetails: {
+        color: '#E6DDC5',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    notesContainer: {
+        marginTop: 25,
+        width: 300,
+        height: 105,
+        borderColor: '#583A25',
+        borderWidth: 2,
+        borderRadius: 15,
+    },
+    notes: {
+        margin: 10,
+        width: 295,
+        height: 100,
+        fontSize: 12,
+        color: '#583A25',
+    },
+    buttonContainer: {
+        padding: 15,
+    },
+    submitButton: {
+        backgroundColor: '#75604d',
+        width: 300,
+        height: 40,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    submitButtonText: {
+        color: '#e6ddc5',
+        fontSize: 24,
+    },
+    cancelText: {
+        padding: 10,
+        color: '#75604d',
     }
 });
