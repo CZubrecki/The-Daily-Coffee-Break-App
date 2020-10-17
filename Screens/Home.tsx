@@ -1,32 +1,25 @@
-import { StyleSheet, View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
 import { Extraction } from '../Models/Extraction';
 import { getExtractionLogs } from '../Api/ExtractionAPI';
 import { useFocusEffect } from '@react-navigation/native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import FloatingButton from '../Components/FloatingButton';
 
 export default function Home({ navigation, route }: any) {
-    console.log(route?.params);
+    const filters = route?.params;
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate('FilterPage',)}>
-                    <FontAwesomeIcon icon={faFilter} size={20}></FontAwesomeIcon>
-                </TouchableOpacity>
-            ),
-        });
-    }, [navigation]);
-
     const handleRefresh = async () => {
-        const extractions = await getExtractionLogs();
-        if (extractions) {
-            setData(extractions);
-            setLoading(false);
+        try {
+            const extractions = await getExtractionLogs(filters);
+            if (extractions) {
+                setData(extractions);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -34,6 +27,7 @@ export default function Home({ navigation, route }: any) {
         useCallback(() => {
             handleRefresh();
             return () => {
+                console.log(filters);
                 setLoading(false);
             };
         }, [isLoading])
@@ -61,17 +55,19 @@ export default function Home({ navigation, route }: any) {
                     <Text style={styles.noDataText}>No Extractions Logged</Text>
                 </View>
                 :
-                <View style={styles.list}>
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        data={data}
-                        renderItem={renderItem}
-                        keyExtractor={(item: any) => item.id}
-                        refreshing={isLoading}
-                        onRefresh={handleRefresh}
-
-                    />
-                </View>
+                <>
+                    <View style={styles.list}>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={data}
+                            renderItem={renderItem}
+                            keyExtractor={(item: any) => item.id}
+                            refreshing={isLoading}
+                            onRefresh={handleRefresh}
+                        />
+                        <FloatingButton open={false} navigation={navigation} />
+                    </View>
+                </>
             }
         </View>
     );
@@ -83,8 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#75604d',
     },
     list: {
-        minWidth: '100%',
-        minHeight: '100%',
+        flex: 1,
     },
     noData: {
         flex: 1,
