@@ -1,13 +1,26 @@
-import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import ListItem from '../Components/ListItem';
 import { Extraction } from '../Models/Extraction';
-import { getExtractionLogs } from '../api/ExtractionAPI';
+import { getExtractionLogs } from '../Api/ExtractionAPI';
 import { useFocusEffect } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-export default function Home({ navigation }: any) {
+export default function Home({ navigation, route }: any) {
+    console.log(route?.params);
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity style={{ marginRight: 15 }} onPress={() => navigation.navigate('FilterPage',)}>
+                    <FontAwesomeIcon icon={faFilter} size={20}></FontAwesomeIcon>
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
 
     const handleRefresh = async () => {
         const extractions = await getExtractionLogs();

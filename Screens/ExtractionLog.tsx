@@ -6,8 +6,7 @@ import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native-ge
 import Timer from '../Components/Timer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { addExtraction } from '../api/ExtractionAPI';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { addExtraction } from '../Api/ExtractionAPI';
 
 export interface Cup {
     isSelected: boolean;

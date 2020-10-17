@@ -3,13 +3,13 @@ import { View, StyleSheet, Text, ActivityIndicator, Modal, Alert, TextInput } fr
 import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
-import { getExtractionLogById } from '../api/ExtractionAPI';
+import { getExtractionLogById } from '../Api/ExtractionAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import Rating from '../Components/Rating';
 import { useForm } from 'react-hook-form';
-import { updateExtractionLog } from '../api/ExtractionAPI';
+import { updateExtractionLog } from '../Api/ExtractionAPI';
 
 function determineBrewName(extractionRatio: number): any {
     let espressoType = {

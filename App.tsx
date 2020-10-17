@@ -10,10 +10,11 @@ import SignUp from './Screens/SignUp';
 import { View } from 'react-native';
 import { AuthContext } from './Components/context';
 import AsyncStorage from '@react-native-community/async-storage';
-import { authLogin, authSignUp } from './api/AuthAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { authLogin, authSignUp } from './Api/AuthApi';
+import FilterPage from './Screens/FilterPage';
 
 const Stack = createStackNavigator();
 
@@ -152,6 +153,13 @@ export default function App() {
                 component={ExtractionDetails}
                 options={{
                   headerTitle: 'Extraction Details',
+                }}
+              />
+              <Stack.Screen
+                name="FilterPage"
+                component={FilterPage}
+                options={{
+                  headerTitle: 'Filters',
                 }}
               />
             </> :
