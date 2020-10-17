@@ -9,12 +9,12 @@ const UPDATE_EXTRACTION_LOG = '/update-extraction-log';
 const GET = 'GET';
 const POST = 'POST';
 
-export async function getExtractionLogs(): Promise<Extraction[]> {
+export async function getExtractionLogs(filters?: any): Promise<Extraction[]> {
     const headers = await getHeaders();
     if (_.isNil(headers)) {
         return [];
     }
-    return await fetch(`${BASE_URL}${EXTRACTION_LOGS}`, {
+    return await fetch(`${BASE_URL}${EXTRACTION_LOGS}?rating=${filters?.rating}&weightInFilter=${filters?.weightInFilter}&weightOutFilter=${filters?.weightOutFilter}&extractionFilter=${filters?.extractionFilter}`, {
         method: GET,
         headers,
     }).then((response) => response.json())

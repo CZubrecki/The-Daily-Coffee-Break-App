@@ -6,10 +6,10 @@ import { getExtractionLogs } from '../Api/ExtractionAPI';
 import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../Components/FloatingButton';
 
-export default function Home({ navigation, route }: any) {
-    const filters = route?.params;
+export default function Home({ navigation }: any) {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
+    const [filters, setFilters] = useState();
 
     const handleRefresh = async () => {
         try {
@@ -29,12 +29,14 @@ export default function Home({ navigation, route }: any) {
             return () => {
                 setLoading(false);
             };
-        }, [isLoading])
+        }, [isLoading, filters])
     );
 
     useEffect(() => {
         handleRefresh();
     }, [isLoading]);
+
+    const applyFilters = (filters: any) => setFilters(filters);
 
     const renderItem = ({ item }: any) => (
         <ListItem extractionData={{
@@ -51,7 +53,8 @@ export default function Home({ navigation, route }: any) {
         <View style={styles.container}>
             {isLoading ? <ActivityIndicator /> : data.length === 0 ?
                 <View style={styles.noData}>
-                    <Text style={styles.noDataText}>No Extractions Logged</Text>
+                    <Text style={styles.noDataText}>No Extractions</Text>
+                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} />
                 </View>
                 :
                 <>
@@ -64,7 +67,7 @@ export default function Home({ navigation, route }: any) {
                             refreshing={isLoading}
                             onRefresh={handleRefresh}
                         />
-                        <FloatingButton open={false} navigation={navigation} />
+                        <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} />
                     </View>
                 </>
             }
@@ -83,12 +86,11 @@ const styles = StyleSheet.create({
     noData: {
         flex: 1,
         textAlign: 'center',
-        justifyContent: 'center',
         alignContent: 'center',
     },
     noDataText: {
         textAlign: 'center',
         fontSize: 32,
-        color: '#583A25'
+        color: '#e6ddc5'
     }
 });

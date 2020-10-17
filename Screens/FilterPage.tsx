@@ -2,14 +2,18 @@ import { faChevronLeft, faMinus, faPlus } from '@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as _ from 'lodash';
 import React, { useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-export default function FilterPage({ navigation }: any) {
+export default function FilterPage({ navigation, route }: any) {
+    LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+    ]);
     const [rating, setRating] = useState<any>();
     const [weightInFilter, setWeightInFilter] = useState<number[]>([0, 50]);
     const [weightOutFilter, setWeightOutFilter] = useState<number[]>([0, 100]);
     const [extractionFilter, setExtractionFilter] = useState<number[]>([0, 100]);
+    const submitFilters = route.params;
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -28,16 +32,17 @@ export default function FilterPage({ navigation }: any) {
 
 
     const applyFilters = () => {
-        navigation.navigate('Home', {
+        submitFilters({
             rating,
             weightInFilter,
             weightOutFilter,
             extractionFilter,
         });
+        navigation.goBack();
     }
 
-    const resetFilters = () => {
-        setRating(null);
+    const resetFilters = async () => {
+        setRating(undefined);
         setWeightInFilter([0, 50]);
         setWeightOutFilter([0, 100]);
         setExtractionFilter([0, 100]);
