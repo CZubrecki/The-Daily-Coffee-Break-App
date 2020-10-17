@@ -27,7 +27,6 @@ export default function Home({ navigation, route }: any) {
         useCallback(() => {
             handleRefresh();
             return () => {
-                console.log(filters);
                 setLoading(false);
             };
         }, [isLoading])
