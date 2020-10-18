@@ -145,7 +145,7 @@ export default function FilterPage({ navigation, route }: any) {
                             sliderLength={250}
                             onValuesChange={weightOutFilterValuesChange}
                             min={0}
-                            max={50}
+                            max={100}
                             step={1}
                             allowOverlap
                             snapped
@@ -170,7 +170,7 @@ export default function FilterPage({ navigation, route }: any) {
                             sliderLength={250}
                             onValuesChange={extractionFilterValuesChange}
                             min={0}
-                            max={50}
+                            max={100}
                             step={1}
                             allowOverlap
                             snapped

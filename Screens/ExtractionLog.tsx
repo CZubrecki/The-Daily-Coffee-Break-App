@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard } from 'react-native'
+import { Keyboard, } from 'react-native'
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useForm } from "react-hook-form";
 import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import Timer from '../Components/Timer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { addExtraction } from '../Api/ExtractionAPI';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export interface Cup {
     isSelected: boolean;
@@ -129,98 +130,100 @@ export default function ExtractionLog({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                        <View style={styles.fields}>
-                            <View style={styles.row}>
-                                <View style={styles.column}>
-                                    <TextInput
-                                        keyboardType='numeric'
-                                        style={styles.inputField}
-                                        onChangeText={text => {
-                                            setValue('weightIn', text);
-                                        }} />
-                                    <Text style={styles.label}>Weight In</Text>
+            <KeyboardAwareScrollView >
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.container}>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                            <View style={styles.fields}>
+                                <View style={styles.row}>
+                                    <View style={styles.column}>
+                                        <TextInput
+                                            keyboardType='numeric'
+                                            style={styles.inputField}
+                                            onChangeText={text => {
+                                                setValue('weightIn', text);
+                                            }} />
+                                        <Text style={styles.label}>Weight In</Text>
+                                    </View>
+                                    <View style={styles.column}>
+                                        <TextInput
+                                            keyboardType='numeric'
+                                            style={styles.inputField}
+                                            onChangeText={text => {
+                                                setValue('weightOut', text);
+                                            }} />
+                                        <Text style={styles.label}>Weight Out</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.column}>
-                                    <TextInput
-                                        keyboardType='numeric'
-                                        style={styles.inputField}
-                                        onChangeText={text => {
-                                            setValue('weightOut', text);
-                                        }} />
-                                    <Text style={styles.label}>Weight Out</Text>
+                                <View style={styles.row}>
+                                    <View style={styles.column}>
+                                        <TextInput
+                                            style={styles.grindSize}
+                                            onChangeText={text => {
+                                                setValue('beans', text);
+                                            }} />
+                                        <Text style={styles.label}>Beans</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.column}>
+                                        <TextInput
+                                            style={styles.grindSize}
+                                            onChangeText={text => {
+                                                setValue('grindSize', text);
+                                            }} />
+                                        <Text style={styles.label}>Grind Size</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.column}>
+                                        <TextInput
+                                            style={styles.grindSize}
+                                            keyboardType='numeric'
+                                            onChangeText={text => {
+                                                setValue('shotTemperature', text);
+                                            }} />
+                                        <Text style={styles.label}>Shot Temperature</Text>
+                                    </View>
                                 </View>
                             </View>
-                            <View style={styles.row}>
-                                <View style={styles.column}>
-                                    <TextInput
-                                        style={styles.grindSize}
-                                        onChangeText={text => {
-                                            setValue('beans', text);
-                                        }} />
-                                    <Text style={styles.label}>Beans</Text>
-                                </View>
-                            </View>
-                            <View style={styles.row}>
-                                <View style={styles.column}>
-                                    <TextInput
-                                        style={styles.grindSize}
-                                        onChangeText={text => {
-                                            setValue('grindSize', text);
-                                        }} />
-                                    <Text style={styles.label}>Grind Size</Text>
-                                </View>
-                            </View>
-                            <View style={styles.row}>
-                                <View style={styles.column}>
-                                    <TextInput
-                                        style={styles.grindSize}
-                                        keyboardType='numeric'
-                                        onChangeText={text => {
-                                            setValue('shotTemperature', text);
-                                        }} />
-                                    <Text style={styles.label}>Shot Temperature</Text>
-                                </View>
+                        </TouchableWithoutFeedback>
+                        <View style={styles.row}>
+                            <Timer setExtractionTime={setExtractionTime} />
+                        </View>
+                        <View style={styles.ratingRow}>
+                            {cups.map((cup, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    activeOpacity={1}
+                                    onPress={() => handleStateChange(index)}>
+                                    <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
+                                </TouchableOpacity>))}
+                        </View>
+                        <Text style={styles.label}>Rating</Text>
+                        <View>
+                            <View style={styles.notesContainer}>
+                                <TextInput
+                                    placeholder='Notes...'
+                                    style={styles.notes}
+                                    maxLength={150}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    onChangeText={text => {
+                                        setValue('notes', text);
+                                    }} />
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
-                    <View style={styles.row}>
-                        <Timer setExtractionTime={setExtractionTime} />
-                    </View>
-                    <View style={styles.ratingRow}>
-                        {cups.map((cup, index) => (
+                        <View style={styles.bottom}>
                             <TouchableOpacity
-                                key={index}
-                                activeOpacity={1}
-                                onPress={() => handleStateChange(index)}>
-                                <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
-                            </TouchableOpacity>))}
-                    </View>
-                    <Text style={styles.label}>Rating</Text>
-                    <View>
-                        <View style={styles.notesContainer}>
-                            <TextInput
-                                placeholder='Notes...'
-                                style={styles.notes}
-                                maxLength={150}
-                                multiline={true}
-                                numberOfLines={5}
-                                onChangeText={text => {
-                                    setValue('notes', text);
-                                }} />
+                                style={styles.submitButton}
+                                onPress={handleSubmit(onSubmit)}>
+                                <Text style={styles.submitButtonText}> Save </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.bottom}>
-                        <TouchableOpacity
-                            style={styles.submitButton}
-                            onPress={handleSubmit(onSubmit)}>
-                            <Text style={styles.submitButtonText}> Save </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     );
 }
