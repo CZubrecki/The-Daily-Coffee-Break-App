@@ -35,7 +35,7 @@ export default function Rating({ propRating, ratingCallback }: Props) {
         for (let i = 0; i < (5 - rating); i++) {
             cupsData.push({
                 isSelected: false,
-                color: '#b8ad99',
+                color: '#bdbdbd',
             });
         }
         return cupsData;
@@ -55,7 +55,7 @@ export default function Rating({ propRating, ratingCallback }: Props) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             };
             updateRating(data);
             setCups(data);
@@ -66,7 +66,7 @@ export default function Rating({ propRating, ratingCallback }: Props) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             };
             updateRating(data);
             setCups(data);
@@ -81,7 +81,7 @@ export default function Rating({ propRating, ratingCallback }: Props) {
             data[i] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             }
         }
 
@@ -95,7 +95,7 @@ export default function Rating({ propRating, ratingCallback }: Props) {
             data[i] = {
                 ...data[i],
                 isSelected: false,
-                color: '#b8ad99',
+                color: '#bdbdbd',
             }
         }
         return data;

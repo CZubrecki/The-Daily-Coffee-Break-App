@@ -19,12 +19,12 @@ export default function FilterPage({ navigation, route }: any) {
         navigation.setOptions({
             headerLeft: () => (
                 <TouchableOpacity style={{ marginLeft: 15 }} onPress={onBackPressed}>
-                    <FontAwesomeIcon icon={faChevronLeft} size={20} style={{ color: '#E6DDC5' }} />
+                    <FontAwesomeIcon icon={faChevronLeft} size={20} style={{ color: '#FFF' }} />
                 </TouchableOpacity>
             ),
             headerRight: () => (
                 <TouchableOpacity style={{ marginRight: 15 }} onPress={resetFilters}>
-                    <Text style={{ color: '#E6DDC5', fontSize: 16 }}>Reset</Text>
+                    <Text style={{ color: '#FFF', fontSize: 16 }}>Reset</Text>
                 </TouchableOpacity>
             ),
         });

@@ -116,12 +116,11 @@ export default function App() {
             shadowColor: 'transparent'
           },
           headerTitleStyle: {
-            color: '#E6DDC5',
+            color: '#FFF',
+            fontFamily: 'Helvetica',
+            fontWeight: '300',
           },
-          headerBackTitleStyle: {
-            color: '#E6DDC5',
-          },
-          headerTintColor: '#E6DDC5',
+          headerTintColor: '#FFF',
         }}>
           {loginState.token && loginState.email ?
             <>
@@ -131,7 +130,7 @@ export default function App() {
                 options={({ navigation, route }) => ({
                   headerLeft: () => (
                     <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => authContext.logout()}>
-                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#E6DDC5' }} />
+                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#FFF', fontWeight: '300', }} />
                     </TouchableOpacity>
                   ),
                 })}

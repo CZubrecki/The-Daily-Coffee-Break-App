@@ -43,11 +43,12 @@ export default function ListItem(props: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6DDC5',
+        borderWidth: 2,
+        borderColor: '#583A25',
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
-        borderRadius: 5,
+        borderRadius: 20,
     },
     row: {
         flex: 1,
@@ -62,18 +63,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     date: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         fontSize: 16,
-        color: '#75604d',
+        color: '#583A25',
     },
     item: {
         flexDirection: 'row',
     },
     title: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         fontSize: 26,
-        color: '#75604d',
+        color: '#583A25',
     },
     subTitle: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         fontSize: 12,
-        color: '#75604d',
+        color: '#583A25',
     }
 });

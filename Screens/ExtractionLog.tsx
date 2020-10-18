@@ -48,7 +48,7 @@ export default function ExtractionLog({ navigation }: any) {
         for (let i = 0; i < 5; i++) {
             cupsData.push({
                 isSelected: false,
-                color: '#b8ad99',
+                color: '#bdbdbd',
             });
         }
         return cupsData;
@@ -72,7 +72,7 @@ export default function ExtractionLog({ navigation }: any) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             };
             updateRating(data);
             setCups(data);
@@ -83,7 +83,7 @@ export default function ExtractionLog({ navigation }: any) {
             data[index] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             };
             updateRating(data);
             setCups(data);
@@ -98,7 +98,7 @@ export default function ExtractionLog({ navigation }: any) {
             data[i] = {
                 ...data[index],
                 isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#b8ad99',
+                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
             }
         }
 
@@ -112,7 +112,7 @@ export default function ExtractionLog({ navigation }: any) {
             data[i] = {
                 ...data[i],
                 isSelected: false,
-                color: '#b8ad99',
+                color: '#bdbdbd',
             }
         }
         return data;
@@ -130,7 +130,7 @@ export default function ExtractionLog({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView >
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.container}>
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -216,7 +216,6 @@ export default function ExtractionLog({ navigation }: any) {
                         </View>
                         <View style={styles.bottom}>
                             <TouchableOpacity
-                                style={styles.submitButton}
                                 onPress={handleSubmit(onSubmit)}>
                                 <Text style={styles.submitButtonText}> Save </Text>
                             </TouchableOpacity>
@@ -228,10 +227,10 @@ export default function ExtractionLog({ navigation }: any) {
     );
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6DDC5',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -251,10 +250,9 @@ const styles = StyleSheet.create({
     },
     inputField: {
         borderColor: '#583A25',
-        borderWidth: 2,
-        borderRadius: 15,
+        borderBottomWidth: 1.5,
         fontSize: 24,
-        width: 60,
+        width: 80,
         height: 60,
         color: '#583A25',
         textAlign: 'center',
@@ -262,6 +260,8 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 20,
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     ratingRow: {
         flexDirection: 'row',
@@ -274,8 +274,7 @@ const styles = StyleSheet.create({
         width: 300,
         height: 40,
         borderColor: '#583A25',
-        borderWidth: 2,
-        borderRadius: 15,
+        borderBottomWidth: 1.5,
         textAlign: 'center',
         fontSize: 24,
         color: '#583A25',
@@ -285,7 +284,7 @@ const styles = StyleSheet.create({
         width: 300,
         height: 105,
         borderColor: '#583A25',
-        borderWidth: 2,
+        borderWidth: 1.5,
         borderRadius: 15,
     },
     notes: {
@@ -294,6 +293,8 @@ const styles = StyleSheet.create({
         height: 100,
         fontSize: 12,
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     bottom: {
         paddingTop: 50,
@@ -301,16 +302,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginBottom: 36
     },
-    submitButton: {
-        backgroundColor: '#75604d',
-        width: 300,
-        height: 40,
-        borderRadius: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     submitButtonText: {
-        color: '#e6ddc5',
         fontSize: 24,
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
+        color: '#583A25',
     }
 });

@@ -64,7 +64,7 @@ export default function SignUp() {
                 <View style={styles.row}>
                     <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
                     <TextInput
-                        placeholderTextColor="#E6DDC5"
+                        placeholderTextColor="#FFF"
                         autoCapitalize="none"
                         placeholder='Email'
                         style={styles.email}
@@ -83,7 +83,7 @@ export default function SignUp() {
                     <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
                         placeholder='Password'
-                        placeholderTextColor="#E6DDC5"
+                        placeholderTextColor="#FFF"
                         style={styles.password}
                         secureTextEntry={true}
                         onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
@@ -106,7 +106,7 @@ export default function SignUp() {
                     <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
                         placeholder='Confirm Password'
-                        placeholderTextColor="#E6DDC5"
+                        placeholderTextColor="#FFF"
                         style={styles.password}
                         secureTextEntry={true}
                         onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
@@ -154,32 +154,38 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         margin: 10,
-        borderColor: '#E6DDC5',
+        borderColor: '#FFF',
         height: 50,
         width: 300,
         borderWidth: 1,
         borderRadius: 20,
     },
     email: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         paddingLeft: 10,
         height: 35,
         width: 300,
         fontSize: 20,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     icon: {
         marginLeft: 10,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     errorMsg: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         color: 'red',
     },
     password: {
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
         fontSize: 20,
         paddingLeft: 10,
         height: 35,
         width: 300,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     bottom: {
         flex: 1,
@@ -187,7 +193,8 @@ const styles = StyleSheet.create({
         marginBottom: 36
     },
     signIn: {
-        backgroundColor: '#E6DDC5',
+        borderColor: '#FFF',
+        borderWidth: 1.5,
         width: 300,
         height: 40,
         borderRadius: 20,
@@ -195,7 +202,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInText: {
-        color: '#75604d',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
+        color: '#FFF',
         fontSize: 24,
     }
 });

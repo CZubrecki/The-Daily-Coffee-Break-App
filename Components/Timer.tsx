@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     timerText: {
         fontSize: 72,
-        fontWeight: '200',
+        fontWeight: '100',
         color: '#583A25',
     },
     buttonRow: {
@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         fontSize: 18,
-        color: "#E6DDC5"
+        color: "#FFF",
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     buttonBorder: {
         height: 76,
@@ -113,6 +115,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#E6DDC5',
+        borderColor: '#FFF',
     }
 })

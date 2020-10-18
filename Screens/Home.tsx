@@ -78,7 +78,7 @@ export default function Home({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#75604d',
+        // backgroundColor: '#75604d',
     },
     list: {
         flex: 1,
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
     noDataText: {
         textAlign: 'center',
         fontSize: 32,
-        color: '#e6ddc5'
+        color: '#583A25'
     }
 });

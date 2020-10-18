@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, Modal, Alert, TextInput } from "react-native";
+import { View, StyleSheet, Text, ActivityIndicator, Modal, Alert, TextInput, KeyboardAvoidingView } from "react-native";
 import { Extraction } from '../Models/Extraction';
 import moment from 'moment';
 import * as _ from 'lodash';
 import { getExtractionLogById } from '../Api/ExtractionAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoffee, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Rating from '../Components/Rating';
 import { useForm } from 'react-hook-form';
 import { updateExtractionLog } from '../Api/ExtractionAPI';
@@ -124,7 +124,7 @@ export default function ExtractionDetails({ navigation, route }: any) {
                                             setValue('notes', text);
                                         }} />
                                 </View>
-                                <View style={styles.buttonContainer}>
+                                <View>
                                     <TouchableOpacity
                                         style={styles.submitButton}
                                         onPress={handleSubmit(onSubmit)}>
@@ -203,7 +203,6 @@ export default function ExtractionDetails({ navigation, route }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6DDC5',
     },
     dataContainer: {
     },
@@ -211,6 +210,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         margin: 20,
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     row: {
         justifyContent: 'center',
@@ -221,6 +222,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         paddingTop: 20,
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     extractionRow: {
         justifyContent: 'center',
@@ -252,6 +255,8 @@ const styles = StyleSheet.create({
         fontSize: 32,
         color: '#583A25',
         textAlign: 'center',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     brewTypeSection: {
         flex: 1,
@@ -261,26 +266,33 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#583A25',
         textAlign: 'center',
-        fontWeight: '600',
+        fontFamily: 'Helvetica',
+        fontWeight: '500',
     },
     brewType: {
         fontSize: 14,
         color: '#583A25',
         textAlign: 'center',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     label: {
-        fontSize: 14,
+        fontSize: 20,
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     dataLabel: {
         fontSize: 18,
-        fontWeight: '500',
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     temperatureValue: {
         fontSize: 20,
-        fontWeight: '400',
         color: '#583A25',
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     notesRow: {
         flexDirection: 'row',
@@ -288,7 +300,7 @@ const styles = StyleSheet.create({
         margin: 20,
     },
     notesBorder: {
-        borderWidth: 2,
+        borderWidth: 1.5,
         borderColor: '#583A25',
         borderRadius: 20,
         margin: 10,
@@ -302,7 +314,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     editDetails: {
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     modalView: {
         margin: 20,
@@ -330,7 +342,7 @@ const styles = StyleSheet.create({
         width: 300,
         height: 105,
         borderColor: '#583A25',
-        borderWidth: 2,
+        borderWidth: 1.5,
         borderRadius: 15,
     },
     notes: {
@@ -340,19 +352,15 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#583A25',
     },
-    buttonContainer: {
-        padding: 15,
-    },
     submitButton: {
-        backgroundColor: '#75604d',
         width: 300,
         height: 40,
-        borderRadius: 15,
+        borderColor: '#583A25',
         justifyContent: 'center',
         alignItems: 'center',
     },
     submitButtonText: {
-        color: '#e6ddc5',
+        color: '#583A25',
         fontSize: 24,
     },
     cancelText: {

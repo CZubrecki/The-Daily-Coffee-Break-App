@@ -58,7 +58,7 @@ export default function Login({ navigation }: any) {
                 <View style={styles.row}>
                     <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
                     <TextInput
-                        placeholderTextColor="#E6DDC5"
+                        placeholderTextColor="#FFF"
                         autoCapitalize="none"
                         placeholder='Email'
                         style={styles.email}
@@ -77,7 +77,7 @@ export default function Login({ navigation }: any) {
                     <FontAwesomeIcon icon={faLock} style={styles.icon} />
                     <TextInput
                         placeholder='Password'
-                        placeholderTextColor="#E6DDC5"
+                        placeholderTextColor="#FFF"
                         style={styles.password}
                         secureTextEntry={true}
                         onChangeText={text => {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         margin: 10,
-        borderColor: '#E6DDC5',
+        borderColor: '#FFF',
         height: 50,
         width: 300,
         borderWidth: 1,
@@ -137,21 +137,21 @@ const styles = StyleSheet.create({
         height: 50,
         width: 300,
         fontSize: 20,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     errorMsg: {
         color: 'red',
     },
     icon: {
         marginLeft: 10,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     password: {
         fontSize: 20,
         paddingLeft: 10,
         height: 50,
         width: 300,
-        color: '#E6DDC5',
+        color: '#FFF',
     },
     bottom: {
         flex: 1,
@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
         marginBottom: 36
     },
     signIn: {
-        backgroundColor: '#E6DDC5',
+        borderColor: '#FFF',
+        borderWidth: 1.5,
         width: 300,
         height: 40,
         borderRadius: 20,
@@ -167,11 +168,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInText: {
-        color: '#75604d',
+        color: '#FFF',
         fontSize: 24,
     },
     signUp: {
-        color: '#E6DDC5',
+        color: '#FFF',
         paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
