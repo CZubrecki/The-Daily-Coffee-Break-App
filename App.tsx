@@ -130,7 +130,7 @@ export default function App() {
                 options={({ navigation, route }) => ({
                   headerLeft: () => (
                     <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => authContext.logout()}>
-                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#FFF', fontWeight: '300', }} />
+                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#FFF', }} />
                     </TouchableOpacity>
                   ),
                 })}
