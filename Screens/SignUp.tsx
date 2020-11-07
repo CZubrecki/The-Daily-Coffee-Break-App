@@ -8,131 +8,82 @@ import { AuthContext } from '../Components/context';
 import { SignUpPayload } from '../Models/Auth';
 import * as _ from 'lodash';
 import * as Animatible from 'react-native-animatable';
+import { Image } from 'react-native';
 
-export default function SignUp() {
-    const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
-    const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
-    const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true)
-    const { register, handleSubmit, setValue } = useForm();
+export default function SignUp({ closeModal }: any) {
+    const Icon = require('../Assets/icon.png');
+    const { register, handleSubmit, setValue, getValues } = useForm();
     const { signUp } = useContext(AuthContext);
 
     const onSubmit = async (data: SignUpPayload) => {
-        if ((_.isNil(data.email) || _.isNil(data.password)) || _.isNil(data.confirmPassword) ||
-            (data.email.trim() === '' || data.password.trim() === '') || data.confirmPassword.trim() === ''
-        ) {
+        if ((_.isNil(data.email) || _.isNil(data.password)) || (data.email.trim() === '' || data.password.trim() === '')) {
             Alert.alert('There are missing fields');
             return;
         }
 
-        if (data.password !== data.confirmPassword) {
-            setPasswordsMatch(false);
-            return;
+        if (checkValidEmail(data.email) && checkValidPassword(data.password)) {
+            signUp(data.email, data.password);
         }
-
-        signUp(data.email, data.password);
     }
 
-    const handleValidUser = (email: string) => {
+    const checkValidEmail = (email: string) => {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (email.trim().length === 0) {
-            setIsValidEmail(true);
-        } else if (reg.test(email)) {
-            setIsValidEmail(true);
-        } else {
-            setIsValidEmail(false);
-        }
+        return email.trim().length !== 0 && reg.test(email);
     }
 
-    const handleValidPassword = (password: string) => {
-        if (password.trim().length === 0) {
-            setPasswordsMatch(true);
-            setIsValidPassword(true);
-        } else if (password.trim().length < 8) {
-            setIsValidPassword(false);
-        }
-    }
+    const checkValidPassword = (password: string) => (password.trim().length !== 0 && password.trim().length >= 8);
 
     useEffect(() => {
         register('email');
         register('password');
-        register('confirmPassword');
     }, [register]);
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <View style={styles.row}>
-                    <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
-                    <TextInput
-                        placeholderTextColor="#FFF"
-                        autoCapitalize="none"
-                        placeholder='Email'
-                        style={styles.email}
-                        onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-                        onChangeText={text => {
-                            setValue('email', text);
-                        }}
-                    />
-                </View>
-                {isValidEmail ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Email is invalid.</Text>
-                    </Animatible.View>
-                }
-                <View style={styles.row}>
-                    <FontAwesomeIcon icon={faLock} style={styles.icon} />
-                    <TextInput
-                        placeholder='Password'
-                        placeholderTextColor="#FFF"
-                        style={styles.password}
-                        secureTextEntry={true}
-                        onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
-                        onChangeText={text => {
-                            setValue('password', text);
-                        }}
-                    />
-                </View>
-                {isValidPassword ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Password is invalid.</Text>
-                    </Animatible.View>
-                }
-                {passwordsMatch ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Passwords do not match.</Text>
-                    </Animatible.View>
-                }
-                <View style={styles.row}>
-                    <FontAwesomeIcon icon={faLock} style={styles.icon} />
-                    <TextInput
-                        placeholder='Confirm Password'
-                        placeholderTextColor="#FFF"
-                        style={styles.password}
-                        secureTextEntry={true}
-                        onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
-                        onChangeText={text => {
-                            setValue('confirmPassword', text);
-                        }}
-                    />
-                </View>
-                {isValidPassword ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Password is invalid.</Text>
-                    </Animatible.View>
-                }
-                {passwordsMatch ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Passwords do not match.</Text>
-                    </Animatible.View>
-                }
+            <View style={styles.header}>
+                <Image source={Icon} />
             </View>
-
-            <View style={styles.bottom}>
-                <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.signInText}> Sign Up </Text>
-                </TouchableOpacity>
+            <View style={styles.form}>
+                <TextInput
+                    placeholder='Email'
+                    placeholderTextColor="#BEBEBE"
+                    clearButtonMode="always"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    onChangeText={text => {
+                        setValue('email', text);
+                    }}
+                />
+                <View style={styles.divider} />
+                <TextInput
+                    placeholder='Password'
+                    placeholderTextColor="#BEBEBE"
+                    clearButtonMode="always"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    secureTextEntry={true}
+                    onChangeText={text => {
+                        setValue('password', text);
+                    }}
+                />
+            </View>
+            <View style={styles.buttonContainer}>
+                <View>
+                    <TouchableOpacity
+                        style={styles.signUpButton}
+                        onPress={handleSubmit(onSubmit)}>
+                        <Text style={styles.signUpText}>
+                            Sign Up
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.existingAccountContainer}>
+                    <TouchableOpacity onPress={closeModal}>
+                        <Text style={styles.existingAccountText}>
+                            Already have an account?
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
@@ -141,70 +92,56 @@ export default function SignUp() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#75604d',
-        justifyContent: 'center',
         alignItems: 'center',
     },
-    inputContainer: {
+    header: {
+        backgroundColor: '#75604D',
+        width: '100%',
+        height: '25%',
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: '50%',
     },
-    row: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        margin: 10,
-        borderColor: '#FFF',
-        height: 50,
-        width: 300,
+    form: {
+        marginVertical: '7%',
+        width: '90%',
         borderWidth: 1,
-        borderRadius: 20,
+        borderColor: '#BEBEBE',
+        borderRadius: 3,
+        height: 75,
     },
-    email: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        paddingLeft: 10,
-        height: 35,
-        width: 300,
-        fontSize: 20,
-        color: '#FFF',
+    divider: {
+        borderWidth: .5,
+        borderColor: '#BEBEBE',
+        height: 1,
     },
-    icon: {
-        marginLeft: 10,
-        color: '#FFF',
+    input: {
+        height: '50%',
+        justifyContent: 'center',
+        paddingHorizontal: '3%',
     },
-    errorMsg: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        color: 'red',
+    buttonContainer: {
+        width: '90%',
     },
-    password: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        fontSize: 20,
-        paddingLeft: 10,
-        height: 35,
-        width: 300,
-        color: '#FFF',
-    },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
-    },
-    signIn: {
-        borderColor: '#FFF',
-        borderWidth: 1.5,
-        width: 300,
-        height: 40,
-        borderRadius: 20,
+    signUpButton: {
+        backgroundColor: '#75604D',
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        height: 37.5,
+        borderRadius: 5,
     },
-    signInText: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
+    signUpText: {
+        fontWeight: '600',
+        fontSize: 16,
         color: '#FFF',
-        fontSize: 24,
+    },
+    existingAccountContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: '5%',
+    },
+    existingAccountText: {
+        color: '#75604D',
+        fontSize: 18,
     }
 });

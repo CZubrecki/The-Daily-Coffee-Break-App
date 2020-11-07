@@ -1,20 +1,18 @@
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Alert, Text, TextInput } from 'react-native';
+import { Alert, KeyboardAvoidingView, Text, TextInput, Image, Modal, Button } from 'react-native';
 import { StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthContext } from '../Components/context';
-import { faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import * as Animatible from 'react-native-animatable';
 import * as _ from 'lodash';
 import { LoginPayload } from '../Models/Auth';
+import SignUp from './SignUp';
 
 export default function Login({ navigation }: any) {
-    const [isValidEmail, setIsValidEmail] = useState(true);
-    const [isValidPassword, setIsValidPassword] = useState(true);
-    const { register, handleSubmit, setValue } = useForm();
+    const Icon = require('../Assets/icon.png');
+    const { register, handleSubmit, setValue, getValues } = useForm();
     const { login } = useContext(AuthContext);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const onSubmit = async (data: LoginPayload) => {
         if ((_.isNil(data.email) || _.isNil(data.password)) || (data.email.trim() === '' || data.password.trim() === '')) {
@@ -22,30 +20,20 @@ export default function Login({ navigation }: any) {
             return;
         }
 
-        if (isValidEmail && isValidPassword) {
+        if (checkValidEmail(data.email) && checkValidPassword(data.password)) {
             login(data.email, data.password);
             return;
         }
     }
 
-    const handleValidUser = (email: string) => {
+    const checkValidEmail = (email: string) => {
         const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (email.trim().length === 0) {
-            setIsValidEmail(true);
-        } else if (reg.test(email)) {
-            setIsValidEmail(true);
-        } else {
-            setIsValidEmail(false);
-        }
+        return email.trim().length !== 0 && reg.test(email);
     }
 
-    const handleValidPassword = (password: string) => {
-        if (password.trim().length === 0) {
-            setIsValidPassword(true);
-        } else if (password.trim().length < 8) {
-            setIsValidPassword(false);
-        }
-    }
+    const checkValidPassword = (password: string) => (password.trim().length !== 0 && password.trim().length >= 8);
+
+    const closeModal = () => setModalVisible(false);
 
     useEffect(() => {
         register('email');
@@ -53,128 +41,159 @@ export default function Login({ navigation }: any) {
     }, [register]);
 
     return (
-        <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <View style={styles.row}>
-                    <FontAwesomeIcon icon={faUserCircle} style={styles.icon} />
-                    <TextInput
-                        placeholderTextColor="#FFF"
-                        autoCapitalize="none"
-                        placeholder='Email'
-                        style={styles.email}
-                        onChangeText={text => {
-                            setValue('email', text);
-                        }}
-                        onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-                    />
+        <>
+            <Modal animationType="slide" collapsable={true} presentationStyle='formSheet' visible={modalVisible} onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+            }}>
+                <SignUp closeModal={closeModal} />
+            </Modal>
+            <KeyboardAvoidingView
+                behavior="padding"
+                style={styles.container}>
+                <View style={styles.header}>
+                    <View>
+                        <Image source={Icon} />
+                    </View>
                 </View>
-                {isValidEmail ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Email is invalid.</Text>
-                    </Animatible.View>
-                }
-                <View style={styles.row}>
-                    <FontAwesomeIcon icon={faLock} style={styles.icon} />
-                    <TextInput
-                        placeholder='Password'
-                        placeholderTextColor="#FFF"
-                        style={styles.password}
-                        secureTextEntry={true}
-                        onChangeText={text => {
-                            setValue('password', text);
-                        }}
-                        onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
-                    />
-                </View>
-                {isValidPassword ? null :
-                    <Animatible.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Password is invalid.</Text>
-                    </Animatible.View>
-                }
-            </View>
 
-            <View style={styles.bottom}>
+                <View style={styles.form}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            placeholder='Email'
+                            placeholderTextColor="#BEBEBE"
+                            clearButtonMode="always"
+                            autoCapitalize="none"
+                            keyboardType='email-address'
+                            style={styles.input}
+                            onChangeText={text => {
+                                setValue('email', text);
+                            }}
+                        />
+                    </View>
+                    <View style={styles.divider} />
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            placeholder='Password'
+                            placeholderTextColor="#BEBEBE"
+                            clearButtonMode="always"
+                            autoCapitalize="none"
+                            style={styles.input}
+                            secureTextEntry={true}
+                            onChangeText={text => {
+                                setValue('password', text);
+                            }}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={styles.loginButton}
+                        onPress={handleSubmit(onSubmit)}>
+                        <Text style={styles.loginText}>Log In</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={handleSubmit(onSubmit)}>
-                    <Text style={styles.signInText}> Login </Text>
+                    style={styles.forgotPassword}
+                    onPress={() => console.log('forgot me')}>
+                    <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.signUp}
-                    onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={styles.signUp}> Sign Up </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+                <View style={[styles.createNewAccountContainer, styles.bottom]}>
+                    <View style={styles.orContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ color: '#BEBEBE' }}>────────</Text><Text> OR </Text><Text style={{ color: '#BEBEBE' }}>────────</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.createAccount}
+                        onPress={() => setModalVisible(true)}>
+                        <Text style={styles.createAccountText}>Create New Account</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#75604d',
+        alignItems: 'center',
+    },
+    header: {
+        backgroundColor: '#75604D',
+        width: '100%',
+        height: '28%',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    form: {
+        borderRadius: 3,
+        borderColor: '#BEBEBE',
+        width: '90%',
+        height: 75,
+        borderWidth: 1,
+        marginVertical: '10%',
+    },
+    divider: {
+        borderWidth: .5,
+        borderColor: '#BEBEBE',
+        height: 1,
     },
     inputContainer: {
+        width: '100%',
+        justifyContent: 'center',
+        marginHorizontal: 10,
+    },
+    input: {
+        height: '50%',
+        width: '95%',
+        justifyContent: 'center',
+    },
+    loginButton: {
+        backgroundColor: '#75604D',
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '50%',
+        marginVertical: '3%',
+        height: 37.5,
+        borderRadius: 5,
     },
-    row: {
+    loginText: {
+        fontWeight: '600',
+        fontSize: 16,
+        color: '#FFF'
+    },
+    forgotPassword: {
+        marginVertical: '7%',
+    },
+    forgotPasswordText: {
+        color: '#75604D',
+        fontWeight: '600',
+        fontSize: 16,
+    },
+    createNewAccountContainer: {
+        width: '90%',
+    },
+    orContainer: {
         alignItems: 'center',
-        flexDirection: 'row',
-        margin: 10,
-        borderColor: '#FFF',
-        height: 50,
-        width: 300,
-        borderWidth: 1,
-        borderRadius: 20,
     },
-    email: {
-        paddingLeft: 10,
-        height: 50,
-        width: 300,
-        fontSize: 20,
-        color: '#FFF',
+    createAccount: {
+        backgroundColor: 'hsla(34, 44%, 69%, 0.64)',
+        justifyContent: 'center',
+        width: '100%',
+        alignItems: 'center',
+        marginVertical: '3%',
+        height: 37.5,
+        borderRadius: 5,
     },
-    errorMsg: {
-        color: 'red',
-    },
-    icon: {
-        marginLeft: 10,
-        color: '#FFF',
-    },
-    password: {
-        fontSize: 20,
-        paddingLeft: 10,
-        height: 50,
-        width: 300,
-        color: '#FFF',
+    createAccountText: {
+        color: '#75604D',
+        fontWeight: '600',
+        fontSize: 16,
     },
     bottom: {
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36
     },
-    signIn: {
-        borderColor: '#FFF',
-        borderWidth: 1.5,
-        width: 300,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    signInText: {
-        color: '#FFF',
-        fontSize: 24,
-    },
-    signUp: {
-        color: '#FFF',
-        paddingTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
 });
