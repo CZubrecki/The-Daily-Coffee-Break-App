@@ -15,6 +15,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authLogin, authSignUp } from './Api/AuthApi';
 import FilterPage from './Screens/FilterPage';
+import SplashScreen from './Screens/SplashScreen';
 
 const Stack = createStackNavigator();
 
@@ -101,9 +102,7 @@ export default function App() {
 
   if (loginState.isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
+      <SplashScreen />
     );
   }
 
