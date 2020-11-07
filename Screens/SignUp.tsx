@@ -1,13 +1,10 @@
-import { faLock, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Alert } from 'react-native';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../Components/context';
 import { SignUpPayload } from '../Models/Auth';
 import * as _ from 'lodash';
-import * as Animatible from 'react-native-animatable';
 import { Image } from 'react-native';
 
 export default function SignUp({ closeModal }: any) {
