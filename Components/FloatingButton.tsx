@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Animated, TouchableWithoutFeedback } from "react-native";
 
-export default function FloatingButton({ navigation, open, applyFilters }: any) {
+export default function FloatingButton({ navigation, open, applyFilters, filters }: any) {
     const animation = new Animated.Value(0);
     const rotation = {
         transform: [
@@ -57,7 +57,7 @@ export default function FloatingButton({ navigation, open, applyFilters }: any) 
                     <FontAwesomeIcon icon={faPlus} size={20} color='#583A25' />
                 </Animated.View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('FilterPage', applyFilters)}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('FilterPage', { applyFilters, ...filters })}>
                 <Animated.View style={[styles.button, styles.secondary, filterStyle]}>
                     <FontAwesomeIcon icon={faFilter} size={20} color='#583A25' />
                 </Animated.View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
         bottom: 25,
-        right: 25,
+        marginHorizontal: 20,
     },
     button: {
         position: 'absolute',

@@ -13,7 +13,7 @@ export default function FilterPage({ navigation, route }: any) {
     const [weightInFilter, setWeightInFilter] = useState<number[]>([0, 50]);
     const [weightOutFilter, setWeightOutFilter] = useState<number[]>([0, 100]);
     const [extractionFilter, setExtractionFilter] = useState<number[]>([0, 100]);
-    const submitFilters = route.params;
+    const submitFilters = route.params.applyFilters;
 
     useLayoutEffect(() => {
         navigation.setOptions({

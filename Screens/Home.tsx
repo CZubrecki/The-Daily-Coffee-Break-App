@@ -54,7 +54,7 @@ export default function Home({ navigation }: any) {
             {isLoading ? <ActivityIndicator /> : data.length === 0 ?
                 <View style={styles.noData}>
                     <Text style={styles.noDataText}>No Extractions</Text>
-                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} />
+                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} filters={filters} />
                 </View>
                 :
                 <>
@@ -78,7 +78,6 @@ export default function Home({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#75604d',
     },
     list: {
         flex: 1,
