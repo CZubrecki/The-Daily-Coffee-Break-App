@@ -56,17 +56,15 @@ export async function updateExtractionLog(id: string, rating?: number, notes?: s
     });
 }
 
-export async function addExtraction(data: any, rating: number) {
+export async function addExtraction(data: any) {
     const headers = await getHeaders();
     const body = JSON.stringify({
         weightIn: data.weightIn,
         weightOut: data.weightOut,
         extractionTime: data.extractionTime?.toString(),
         grindSize: data.grindSize,
-        rating: rating,
         beans: data.beans,
         shotTemperature: data.shotTemperature,
-        notes: data.notes
     });
 
     return await fetch(`${BASE_URL}${EXTRACTION_LOGS}/add-extraction-log`, {
