@@ -10,6 +10,7 @@ export default function Home({ navigation }: any) {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Extraction[]>([]);
     const [filters, setFilters] = useState();
+    const [dismiss, setDismissed] = useState(false);
 
     const handleRefresh = async () => {
         try {
@@ -29,7 +30,7 @@ export default function Home({ navigation }: any) {
             return () => {
                 setLoading(false);
             };
-        }, [isLoading, filters])
+        }, [isLoading, filters, dismiss])
     );
 
     useEffect(() => {
@@ -37,6 +38,11 @@ export default function Home({ navigation }: any) {
     }, [isLoading]);
 
     const applyFilters = (filters: any) => setFilters(filters);
+
+    const onDismiss = () => {
+        setDismissed(true);
+        handleRefresh();
+    }
 
     const renderItem = ({ item }: any) => (
         <ListItem extractionData={{
@@ -54,7 +60,7 @@ export default function Home({ navigation }: any) {
             {isLoading ? <ActivityIndicator /> : data.length === 0 ?
                 <View style={styles.noData}>
                     <Text style={styles.noDataText}>No Extractions</Text>
-                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} filters={filters} />
+                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} filters={filters} onDismiss={onDismiss} />
                 </View>
                 :
                 <>

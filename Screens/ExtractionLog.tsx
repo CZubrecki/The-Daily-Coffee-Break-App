@@ -1,229 +1,123 @@
-import React, { useEffect, useState } from 'react';
-import { Keyboard, } from 'react-native'
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect, } from 'react';
+import { TextInput, Text, View, StyleSheet } from 'react-native'
 import { useForm } from "react-hook-form";
-import { ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Timer from '../Components/Timer';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { addExtraction } from '../Api/ExtractionAPI';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export interface Cup {
-    isSelected: boolean;
-    color: string;
+interface ExtractionLogProps {
+    closeModal: () => void,
 }
 
-export default function ExtractionLog({ navigation }: any) {
+export default function ExtractionLog({ closeModal }: ExtractionLogProps) {
     const { register, handleSubmit, setValue } = useForm();
-    const [cups, setCups] = useState<Cup[]>([]);
-    const [rating, setRating] = useState<number>(0);
 
     const onSubmit = async (data: any) => {
-        let rating: number = 0;
-        cups.forEach(cup => {
-            if (cup.isSelected) {
-                rating += 1;
-            }
-        });
-        const result = await addExtraction(data, rating);
+        const result = await addExtraction(data);
         if (result) {
-            navigation.navigate('Home');
+            closeModal();
         }
     }
 
     useEffect(() => {
-        setCups(initalizeCups());
         register('weightIn');
         register('weightOut');
         register('extractionTime');
         register('grindSize');
         register('beans');
         register('shotTemperature');
-        register('notes');
     }, [register]);
-
-    const initalizeCups = () => {
-        const cupsData: Cup[] = [];
-        for (let i = 0; i < 5; i++) {
-            cupsData.push({
-                isSelected: false,
-                color: '#bdbdbd',
-            });
-        }
-        return cupsData;
-    }
 
     const setExtractionTime = (seconds: any) => {
         setValue('extractionTime', seconds);
     };
 
-    const handleStateChange = (index: number) => {
-        let data = [...cups];
-
-        if (index === (rating - 1)) {
-            data = clearRatings(data);
-            updateRating(data);
-            setCups(data);
-            return;
-        }
-
-        if ((index === 0 && rating === 1)) {
-            data[index] = {
-                ...data[index],
-                isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
-            };
-            updateRating(data);
-            setCups(data);
-            return data;
-        }
-
-        if (index === 0 && rating === 0) {
-            data[index] = {
-                ...data[index],
-                isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
-            };
-            updateRating(data);
-            setCups(data);
-            return data;
-        }
-
-        if ((index < rating)) {
-            data = clearRatings(data);
-        }
-
-        for (let i = 0; i <= index; i++) {
-            data[i] = {
-                ...data[index],
-                isSelected: !data[index].isSelected,
-                color: !data[index].isSelected ? '#75604d' : '#bdbdbd',
-            }
-        }
-
-        updateRating(data);
-        setCups(data);
-        return data;
-    };
-
-    const clearRatings = (data: Cup[]): Cup[] => {
-        for (let i = 0; i < data.length; i++) {
-            data[i] = {
-                ...data[i],
-                isSelected: false,
-                color: '#bdbdbd',
-            }
-        }
-        return data;
-    }
-
-    const updateRating = (data: Cup[]) => {
-        let totalSelected = 0;
-        data.forEach(cup => {
-            if (cup.isSelected) {
-                totalSelected++;
-            }
-        });
-        setRating(totalSelected);
-    };
-
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.container}>
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                            <View style={styles.fields}>
-                                <View style={styles.row}>
-                                    <View style={styles.column}>
-                                        <TextInput
-                                            keyboardType='numeric'
-                                            style={styles.inputField}
-                                            onChangeText={text => {
-                                                setValue('weightIn', text);
-                                            }} />
-                                        <Text style={styles.label}>Weight In</Text>
-                                    </View>
-                                    <View style={styles.column}>
-                                        <TextInput
-                                            keyboardType='numeric'
-                                            style={styles.inputField}
-                                            onChangeText={text => {
-                                                setValue('weightOut', text);
-                                            }} />
-                                        <Text style={styles.label}>Weight Out</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.column}>
-                                        <TextInput
-                                            style={styles.grindSize}
-                                            onChangeText={text => {
-                                                setValue('beans', text);
-                                            }} />
-                                        <Text style={styles.label}>Beans</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.column}>
-                                        <TextInput
-                                            style={styles.grindSize}
-                                            onChangeText={text => {
-                                                setValue('grindSize', text);
-                                            }} />
-                                        <Text style={styles.label}>Grind Size</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.column}>
-                                        <TextInput
-                                            style={styles.grindSize}
-                                            keyboardType='numeric'
-                                            onChangeText={text => {
-                                                setValue('shotTemperature', text);
-                                            }} />
-                                        <Text style={styles.label}>Shot Temperature</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <View style={styles.row}>
-                            <Timer setExtractionTime={setExtractionTime} />
-                        </View>
-                        <View style={styles.ratingRow}>
-                            {cups.map((cup, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    activeOpacity={1}
-                                    onPress={() => handleStateChange(index)}>
-                                    <FontAwesomeIcon icon={faCoffee} size={30} style={{ color: cup.color }} />
-                                </TouchableOpacity>))}
-                        </View>
-                        <Text style={styles.label}>Rating</Text>
-                        <View>
-                            <View style={styles.notesContainer}>
-                                <TextInput
-                                    placeholder='Notes...'
-                                    style={styles.notes}
-                                    maxLength={150}
-                                    multiline={true}
-                                    numberOfLines={5}
-                                    onChangeText={text => {
-                                        setValue('notes', text);
-                                    }} />
-                            </View>
-                        </View>
-                        <View style={styles.bottom}>
-                            <TouchableOpacity
-                                onPress={handleSubmit(onSubmit)}>
-                                <Text style={styles.submitButtonText}> Save </Text>
-                            </TouchableOpacity>
-                        </View>
+            <View style={[styles.form, { marginTop: 40 }]}>
+                <View style={styles.input}>
+                    <View style={[styles.row, { justifyContent: 'space-between' }]}>
+                        <Text style={styles.formLabel}>Beans</Text>
+                        <Text style={styles.formLabel}>(Optional)</Text>
                     </View>
-                </ScrollView>
-            </KeyboardAwareScrollView>
-        </View>
+                    <TextInput
+                        style={[styles.inputContainer, styles.largeInput]}
+                        returnKeyType='done'
+                        clearButtonMode='always'
+                        onChangeText={text => {
+                            setValue('beans', text);
+                        }} />
+                </View>
+                <View style={styles.input}>
+                    <View style={[styles.row, { justifyContent: 'space-between' }]}>
+                        <Text style={styles.formLabel}>Grind Size</Text>
+                        <Text style={styles.formLabel}>(Optional)</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.inputContainer, styles.largeInput]}
+                        returnKeyType='done'
+                        clearButtonMode='always'
+                        onChangeText={text => {
+                            setValue('grindSize', text);
+                        }} />
+                </View>
+                <View style={[styles.input]}>
+                    <View style={[styles.row, { justifyContent: 'space-between' }]}>
+                        <Text style={styles.formLabel}>Weight In</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.inputContainer, styles.largeInput]}
+                        returnKeyType='done'
+                        keyboardType='numeric'
+                        clearButtonMode='always'
+                        onChangeText={text => {
+                            setValue('weightIn', text);
+                        }} />
+                </View>
+                <View style={[styles.input]}>
+                    <View style={[styles.row, { justifyContent: 'space-between' }]}>
+                        <Text style={styles.formLabel}>Shot Temperature</Text>
+                        <Text style={styles.formLabel}>(Optional)</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.inputContainer, styles.largeInput]}
+                        returnKeyType='done'
+                        keyboardType='numeric'
+                        clearButtonMode='always'
+                        onChangeText={text => {
+                            setValue('shotTemperature', text);
+                        }} />
+                </View>
+            </View>
+            <View style={styles.timer}>
+                <Timer setExtractionTime={setExtractionTime} />
+            </View>
+            <View style={styles.form}>
+                <View style={[styles.input]}>
+                    <View style={styles.row}>
+                        <Text style={styles.formLabel}>Weight Out</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.inputContainer, styles.largeInput]}
+                        returnKeyType='done'
+                        keyboardType='numeric'
+                        onChangeText={text => {
+                            setValue('weightOut', text);
+                        }} />
+                </View>
+                <View style={styles.bottom}>
+                    <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={handleSubmit(onSubmit)}>
+                        <Text style={styles.submitButtonText}>Add Extraction</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <TouchableOpacity
+                onPress={closeModal}>
+                <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+        </View >
     );
 }
 
@@ -231,81 +125,68 @@ export default function ExtractionLog({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
     },
-    fields: {
-        alignItems: 'center',
+    form: {
+        width: '90%',
+    },
+    input: {
+        height: 50,
+        marginVertical: 5,
+    },
+    formLabel: {
+        color: '#583A25',
+        fontSize: 14,
+        fontFamily: 'Helvetica',
+        fontWeight: '300',
     },
     row: {
-        justifyContent: 'center',
         flexDirection: 'row',
-        alignItems: 'center',
     },
-    column: {
-        flexDirection: 'column',
-        marginTop: 20,
-        marginHorizontal: 20,
-        alignItems: 'center',
-    },
-    inputField: {
-        borderColor: '#583A25',
-        borderBottomWidth: 1.5,
-        fontSize: 24,
-        width: 80,
-        height: 60,
-        color: '#583A25',
-        textAlign: 'center',
-    },
-    label: {
-        fontSize: 20,
-        color: '#583A25',
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-    },
-    ratingRow: {
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        justifyContent: 'space-between',
-        marginTop: 20,
-        paddingHorizontal: 80,
-    },
-    grindSize: {
-        width: 300,
-        height: 40,
-        borderColor: '#583A25',
-        borderBottomWidth: 1.5,
-        textAlign: 'center',
-        fontSize: 24,
-        color: '#583A25',
-    },
-    notesContainer: {
-        marginTop: 25,
-        width: 300,
-        height: 105,
-        borderColor: '#583A25',
+    inputContainer: {
+        borderColor: '#D3D3D3',
         borderWidth: 1.5,
-        borderRadius: 15,
+        backgroundColor: '#FFF',
+        borderRadius: 4,
     },
-    notes: {
-        margin: 10,
-        width: 295,
-        height: 100,
-        fontSize: 12,
-        color: '#583A25',
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
+    largeInput: {
+        height: '65%',
+        paddingHorizontal: '2%',
+    },
+    smallInput: {
+        height: '75%',
+        paddingHorizontal: '2%',
+    },
+    timer: {
+        flexDirection: 'row',
+        marginVertical: 5,
     },
     bottom: {
-        paddingTop: 50,
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36
+        width: '100%',
+    },
+    addButton: {
+        backgroundColor: '#75604D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: '3%',
+        marginHorizontal: '2%',
+        height: 37.5,
+        borderRadius: 5,
     },
     submitButtonText: {
-        fontSize: 24,
         fontFamily: 'Helvetica',
         fontWeight: '300',
-        color: '#583A25',
-    }
+        fontSize: 16,
+        color: '#FFF'
+    },
+    cancelText: {
+        color: '#75604D',
+        fontWeight: '600',
+        fontSize: 16,
+    },
+    cancelContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: '5%',
+    },
 });
