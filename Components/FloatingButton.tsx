@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Animated, TouchableWithoutFeedback, Modal, Alert } from "react-native";
 import ExtractionLog from '../Screens/ExtractionLog';
 
-export default function FloatingButton({ navigation, open, applyFilters, filters, onDismiss }: any) {
+export default function FloatingButton({ navigation, open, applyFilters, filters }: any) {
     const [addPageVisible, setAddPageVisible] = useState(false);
     const animation = new Animated.Value(0);
     const rotation = {
@@ -57,10 +57,7 @@ export default function FloatingButton({ navigation, open, applyFilters, filters
 
     return (
         <View style={[styles.container]}>
-            <Modal onDismiss={() => console.log('Dismissed')} animationType="slide" collapsable={true} visible={addPageVisible}>
-                <ExtractionLog closeModal={handleClose} />
-            </Modal>
-            <TouchableWithoutFeedback onPress={() => setAddPageVisible(true)}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('ExtractionLog')}>
                 <Animated.View style={[styles.button, styles.secondary, addStyle]}>
                     <FontAwesomeIcon icon={faPlus} size={20} color='#583A25' />
                 </Animated.View>

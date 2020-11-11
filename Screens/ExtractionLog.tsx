@@ -5,17 +5,13 @@ import Timer from '../Components/Timer';
 import { addExtraction } from '../Api/ExtractionAPI';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-interface ExtractionLogProps {
-    closeModal: () => void,
-}
-
-export default function ExtractionLog({ closeModal }: ExtractionLogProps) {
+export default function ExtractionLog({ navigation }: any) {
     const { register, handleSubmit, setValue } = useForm();
 
     const onSubmit = async (data: any) => {
         const result = await addExtraction(data);
         if (result) {
-            closeModal();
+            navigation.goBack();
         }
     }
 
@@ -114,7 +110,7 @@ export default function ExtractionLog({ closeModal }: ExtractionLogProps) {
                 </View>
             </View>
             <TouchableOpacity
-                onPress={closeModal}>
+                onPress={() => navigation.goBack()}>
                 <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
         </View >

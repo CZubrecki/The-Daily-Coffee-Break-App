@@ -138,7 +138,7 @@ export default function App() {
                 name="ExtractionLog"
                 component={ExtractionLog}
                 options={{
-                  headerTitle: 'Add Extraction Log',
+                  headerShown: false,
                 }}
               />
               <Stack.Screen

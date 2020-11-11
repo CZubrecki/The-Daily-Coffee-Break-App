@@ -39,11 +39,6 @@ export default function Home({ navigation }: any) {
 
     const applyFilters = (filters: any) => setFilters(filters);
 
-    const onDismiss = () => {
-        setDismissed(true);
-        handleRefresh();
-    }
-
     const renderItem = ({ item }: any) => (
         <ListItem extractionData={{
             id: item.id,
@@ -60,7 +55,7 @@ export default function Home({ navigation }: any) {
             {isLoading ? <ActivityIndicator /> : data.length === 0 ?
                 <View style={styles.noData}>
                     <Text style={styles.noDataText}>No Extractions</Text>
-                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} filters={filters} onDismiss={onDismiss} />
+                    <FloatingButton open={false} navigation={navigation} applyFilters={applyFilters} filters={filters} />
                 </View>
                 :
                 <>
