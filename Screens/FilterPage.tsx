@@ -38,7 +38,7 @@ export default function FilterPage({ navigation, route }: any) {
             weightOutFilter,
             extractionFilter,
         });
-        navigation.goBack();
+        navigation.navigate('Home');
     }
 
     const resetFilters = async () => {
@@ -51,7 +51,7 @@ export default function FilterPage({ navigation, route }: any) {
     const onBackPressed = () => {
         resetFilters();
         if (_.isNil(rating)) {
-            navigation.navigate('Home', {});
+            navigation.goBack();
         }
     }
 

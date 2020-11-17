@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react';
+import React, { useEffect, useMemo, useReducer } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Screens/Home';
@@ -8,9 +8,6 @@ import ExtractionDetails from './Screens/ExtractionDetails';
 import Login from './Screens/Login';
 import { AuthContext } from './Components/context';
 import AsyncStorage from '@react-native-community/async-storage';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authLogin, authSignUp } from './Api/AuthApi';
 import FilterPage from './Screens/FilterPage';
 import SplashScreen from './Screens/SplashScreen';
@@ -124,13 +121,9 @@ export default function App() {
               <Stack.Screen
                 name="Home"
                 component={Home}
-                options={({ navigation, route }) => ({
-                  headerLeft: () => (
-                    <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => authContext.logout()}>
-                      <FontAwesomeIcon size={20} icon={faSignOutAlt} style={{ color: '#FFF', }} />
-                    </TouchableOpacity>
-                  ),
-                })}
+                options={{
+                  headerShown: false,
+                }}
               />
               <Stack.Screen
                 name="ExtractionLog"

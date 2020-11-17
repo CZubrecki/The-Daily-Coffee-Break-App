@@ -1,86 +1,65 @@
-import { Platform, StyleSheet, View, Text, StatusBar, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { Extraction } from '../Models/Extraction';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-export interface Props {
-    extractionData: Extraction,
+export interface ListItemProps {
+    extractionData: any,
     navigation: any;
 }
 
-export default function ListItem(props: Props) {
-    const { id, extractionDate, extractionTime, weightIn, weightOut } = props.extractionData;
-    const { navigation } = props;
+export default function ListItem({ extractionData, navigation }: ListItemProps) {
     const dateFormat = 'h:mm a YYYY MMMM D';
-
+    const extraction: Extraction = extractionData.item;
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.push('ExtractionDetails', { _id: id })}>
-                <View style={styles.row}>
-                    <Text style={styles.date}>{moment(extractionDate).format(dateFormat)}</Text>
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => navigation.push('ExtractionDetails', { _id: extraction.id })}
+        >
+            <View style={styles.content}>
+                <View>
+                    <Text style={[{ fontSize: 18, fontWeight: '500' }]}>
+                        {extraction.beans}
+                    </Text>
                 </View>
-                <View style={styles.row}>
-                    <View style={styles.col}>
-                        <Text style={styles.title}>{extractionTime}s</Text>
-                        <Text style={styles.subTitle}>Extraction Time</Text>
-                    </View>
-                    <View style={styles.col}>
-                        <Text style={styles.title}>{weightIn}g</Text>
-                        <Text style={styles.subTitle}>Weight In</Text>
-                    </View>
-                    <View style={styles.col}>
-                        <Text style={styles.title}>{weightOut}g</Text>
-                        <Text style={styles.subTitle}>Weight Out</Text>
-                    </View>
+                <View style={[{ flexDirection: 'row', justifyContent: 'space-between' }]}>
+                    <Text style={[{ fontSize: 10, color: '#A6A6A6' }]}>
+                        {moment(extraction.extractionDate).format(dateFormat)}
+                    </Text>
                 </View>
-            </TouchableOpacity>
-        </View >
+            </View>
+            <View style={styles.chevron}>
+                <FontAwesomeIcon icon={faChevronRight} color={'#75604D'} />
+            </View>
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        borderWidth: 2,
-        borderColor: '#583A25',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-        borderRadius: 20,
-    },
-    row: {
-        flex: 1,
-        width: '100%',
+        marginHorizontal: 10,
+        marginVertical: 10,
+        height: 75,
         flexDirection: 'row',
-        padding: 5,
-    },
-    col: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        borderRadius: 5,
+        backgroundColor: '#FFF',
+        borderLeftColor: '#75604D',
+        borderLeftWidth: 4,
     },
-    date: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        fontSize: 16,
-        color: '#583A25',
+    content: {
+        paddingHorizontal: 10,
+        paddingVertical: 3,
+        flexDirection: 'column',
     },
-    item: {
-        flexDirection: 'row',
-    },
-    title: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        fontSize: 26,
-        color: '#583A25',
-    },
-    subTitle: {
-        fontFamily: 'Helvetica',
-        fontWeight: '300',
-        fontSize: 12,
-        color: '#583A25',
+    chevron: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingRight: 5,
     }
 });
