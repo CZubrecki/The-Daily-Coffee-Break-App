@@ -2,7 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import moment from 'moment';
-import { Extraction } from '../Models/Extraction';
+import { Extraction } from '../../Models/Extraction';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 

@@ -11,7 +11,9 @@ interface ExtractionLogsProps {
 
 export default function ExtractionLogs({ navigation }: ExtractionLogsProps) {
     const [filters, setFilters] = useState();
+    const [search, setSearch] = useState();
     const applyFilters = (filters: any) => setFilters(filters);
+    const applySearch = (search: any) => setSearch(search);
 
     return (
         <>
@@ -21,13 +23,13 @@ export default function ExtractionLogs({ navigation }: ExtractionLogsProps) {
                     <Text style={[{ color: '#FFF', fontWeight: '600', fontSize: 16 },]}>Add Extraction</Text>
                 </TouchableOpacity>
             </View>
-            <SearchFilter {...{ navigation, applyFilters }} />
+            <SearchFilter {...{ navigation, applyFilters, applySearch }} />
             <View style={styles.recentExtractionTitleContainer}>
                 <Text style={styles.recentExtractions}>
                     Recent Extractions
                 </Text>
             </View>
-            <Extractions {...{ navigation, filters }} />
+            <Extractions {...{ navigation, filters, search }} />
         </>
     );
 }

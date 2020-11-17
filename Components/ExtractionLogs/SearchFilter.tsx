@@ -1,17 +1,20 @@
 import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
 interface SearchFilterProps {
     navigation: any;
     applyFilters: (filers: any) => void;
+    applySearch: (search: any) => void;
 }
 
 const { width } = Dimensions.get('window');
 
-export default function SearchFilter({ navigation, applyFilters }: SearchFilterProps) {
+export default function SearchFilter({ navigation, applyFilters, applySearch }: SearchFilterProps) {
+    const [search, setSearch] = useState<string>('');
+
     return (
         <View style={styles.container}>
             <View>
@@ -25,6 +28,13 @@ export default function SearchFilter({ navigation, applyFilters }: SearchFilterP
                     placeholder='Search'
                     placeholderTextColor='#A6A6A6'
                     style={styles.searchInput}
+                    returnKeyType='search'
+                    clearButtonMode="while-editing"
+                    autoFocus={true}
+                    onChange={(event) => {
+                        setSearch(event.nativeEvent.text)
+                    }}
+                    onSubmitEditing={() => applySearch(search)}
                 />
             </View>
         </View>

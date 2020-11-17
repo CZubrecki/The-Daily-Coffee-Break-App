@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import Card from '../Card';
+import Card from './Card';
 
 const data = [
-    {},
-    {},
-    {},
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
 ];
 
 export default function Carrossel() {

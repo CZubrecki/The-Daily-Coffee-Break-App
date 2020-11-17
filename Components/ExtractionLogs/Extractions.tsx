@@ -1,16 +1,18 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { getExtractionLogs } from '../../Api/ExtractionAPI';
 import { Extraction } from '../../Models/Extraction';
-import ListItem from '../ListItem';
+import ListItem from './ListItem';
+import * as _ from 'lodash';
 
 interface ExtracionsProps {
     navigation: any;
     filters: any;
+    search: any;
 }
 
-export default function Extractions({ navigation, filters }: ExtracionsProps) {
+export default function Extractions({ navigation, filters, search }: ExtracionsProps) {
     const [isLoading, setLoading] = useState<boolean>(true);
     const [extractions, setExtractions] = useState<Extraction[]>([]);
 
@@ -18,7 +20,11 @@ export default function Extractions({ navigation, filters }: ExtracionsProps) {
         try {
             const extractions = await getExtractionLogs(filters);
             if (extractions) {
-                setExtractions(extractions);
+                if (!_.isNil(search)) {
+                    searchData(extractions);
+                } else {
+                    setExtractions(extractions);
+                }
                 setLoading(false);
             }
         } catch (error) {
@@ -26,18 +32,22 @@ export default function Extractions({ navigation, filters }: ExtracionsProps) {
         }
     };
 
+    const searchData = (extractions: Extraction[]) => {
+        setExtractions(extractions.filter((extraction) => (extraction.beans?.includes(search) || extraction.grindSize?.includes(search))));
+    }
+
     useFocusEffect(
         useCallback(() => {
             handleRefresh();
             return () => {
                 setLoading(false);
             };
-        }, [isLoading, filters])
+        }, [isLoading, filters, search])
     );
 
     useEffect(() => {
         handleRefresh();
-    }, [isLoading, filters]);
+    }, [isLoading, filters, search]);
 
 
     return (
