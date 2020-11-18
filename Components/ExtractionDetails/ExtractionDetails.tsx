@@ -19,7 +19,7 @@ export default function ExtractionDetails({ weightIn, weightOut, extractionTime,
             <View style={styles.header}>
                 <Text style={[{ fontSize: 22, fontWeight: '500', color: '#654321' }]}>Extraction Details</Text>
             </View>
-            <View style={[styles.divider, { borderWidth: .75, borderColor: '#654321' }]} />
+            <View style={[styles.divider, { borderColor: '#654321' }]} />
             <View style={styles.weightAndTime}>
                 <View style={styles.value}>
                     <Text style={[{ fontSize: 34, color: '#75604D' }]}>{weightIn}g</Text>

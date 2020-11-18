@@ -19,7 +19,7 @@ export default function Overview({ beans, extractionDate, rating }: OverviewProp
                 <Text style={[{ fontSize: 28, fontWeight: '500', color: '#654321' }]}>{beans}</Text>
                 <Text style={[{ fontSize: 12, fontWeight: '500', color: '#B3B3B3' }]}>{moment(extractionDate).format(dateFormat)}</Text>
             </View>
-            <View style={[styles.divider, { borderWidth: .75, borderColor: '#654321' }]} />
+            <View style={[styles.divider, { borderColor: '#654321' }]} />
             <View style={styles.rating}>
                 <Rating {...{ ratingCallback: ratingUpdated, ratingProp: rating }} />
             </View>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         elevation: 7
     },
     divider: {
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: '#DCDCDC',
         height: .5,
     },
