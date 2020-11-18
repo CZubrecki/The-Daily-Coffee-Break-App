@@ -32,7 +32,7 @@ const tabs = [
 ];
 
 const { width } = Dimensions.get("window");
-const height = 75;
+const height = 84;
 
 
 export default function TabBar({ onPress }: TabBarProps) {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         width,
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#75604d',
+        backgroundColor: '#75604D',
         borderTopStartRadius: 20,
         borderTopEndRadius: 20,
     },

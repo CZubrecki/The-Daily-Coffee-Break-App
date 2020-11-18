@@ -57,6 +57,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 7,
         marginRight: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7
     },
     searchContainer: {
         flex: 1,
@@ -66,6 +74,14 @@ const styles = StyleSheet.create({
         height: '100%',
         marginRight: 20,
         borderRadius: 7,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7
     },
     searchIcon: {
         marginHorizontal: 10,

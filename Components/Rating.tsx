@@ -8,13 +8,13 @@ export interface Cup {
     color: string;
 }
 
-export interface Props {
-    propRating?: number,
+export interface RatingProps {
+    ratingProp?: number,
     ratingCallback: (rating: any) => void,
 }
 
-export default function Rating({ propRating, ratingCallback }: Props) {
-    const [rating, setRating] = useState(propRating || 0);
+export default function Rating({ ratingProp, ratingCallback }: RatingProps) {
+    const [rating, setRating] = useState(ratingProp || 0);
     const [cups, setCups] = useState<Cup[]>([]);
 
     useEffect(() => {
