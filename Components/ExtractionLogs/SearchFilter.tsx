@@ -30,7 +30,6 @@ export default function SearchFilter({ navigation, applyFilters, applySearch }: 
                     style={styles.searchInput}
                     returnKeyType='search'
                     clearButtonMode="while-editing"
-                    autoFocus={true}
                     onChange={(event) => {
                         setSearch(event.nativeEvent.text)
                     }}
