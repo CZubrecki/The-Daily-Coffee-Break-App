@@ -17,12 +17,7 @@ export default function ExtractionLogs({ navigation }: ExtractionLogsProps) {
 
     return (
         <>
-            <Carrossel />
-            <View style={styles.addExtractionButtonContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('ExtractionLog')} style={styles.addExtractionButton}>
-                    <Text style={[{ color: '#FFF', fontWeight: '600', fontSize: 16 },]}>Add Extraction</Text>
-                </TouchableOpacity>
-            </View>
+            {/* <Carrossel /> */}
             <SearchFilter {...{ navigation, applyFilters, applySearch }} />
             <View style={styles.recentExtractionTitleContainer}>
                 <Text style={styles.recentExtractions}>
@@ -30,6 +25,11 @@ export default function ExtractionLogs({ navigation }: ExtractionLogsProps) {
                 </Text>
             </View>
             <Extractions {...{ navigation, filters, search }} />
+            <View style={styles.addExtractionButtonContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('ExtractionLog')} style={styles.addExtractionButton}>
+                    <Text style={[{ color: '#FFF', fontWeight: '600', fontSize: 16 },]}>Add Extraction</Text>
+                </TouchableOpacity>
+            </View>
         </>
     );
 }
