@@ -1,11 +1,9 @@
-import { StyleSheet, Text } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import TabBar from '../Components/TabBar';
 import { View } from 'react-native';
 import ExtractionLogs from './ExtractionLogs';
-
-const Tab = createBottomTabNavigator();
+import ComingSoon from './ComingSoon';
 
 export default function Home({ navigation }: any) {
     const [tab, setTab] = useState<string>('Home');
@@ -14,6 +12,8 @@ export default function Home({ navigation }: any) {
     return (
         <View style={styles.container}>
             {tab === 'ExtractionLogs' ? <ExtractionLogs {...{ navigation }} /> : null}
+            {tab === 'Camera' ? <ComingSoon /> : null}
+            {tab === 'Search' ? <ComingSoon /> : null}
             <TabBar {...{ onPress }} />
         </View>
     );

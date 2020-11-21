@@ -13,45 +13,41 @@ const HEADERS = {
 };
 
 export async function authLogin(email: string, password: string): Promise<AuthResponse> {
-    return await fetch(`${BASE_URL}/auth/login`, {
+    const loginResponse = await fetch(`${BASE_URL}/auth/login`, {
         method: POST,
         headers: HEADERS,
         body: generateBody(email, password),
-    }).then((response) => response.json())
-        .then(async (responseJson: any) => {
-            if (responseJson.message) {
-                throw (responseJson.message);
-            }
-            if (responseJson && responseJson.user?.token) {
-                try {
-                    await AsyncStorage.setItem(TOKEN, responseJson.user.token);
-                    return responseJson;
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
+    });
+
+    const loginData = await loginResponse.json();
+
+    if (loginData.message) {
+        throw (loginData.message);
+    }
+
+    if (loginData.user?.token) {
+        await AsyncStorage.setItem(TOKEN, loginData.user?.token);
+    }
+    return loginData;
 }
 
 export async function authSignUp(email: string, password: string): Promise<AuthResponse> {
-    return await fetch(`${BASE_URL}/auth/`, {
+    const signUpResponse = await fetch(`${BASE_URL}/auth/`, {
         method: POST,
         headers: HEADERS,
         body: generateBody(email, password),
-    }).then((response) => response.json())
-        .then(async (responseJson: any) => {
-            if (responseJson.message) {
-                throw (responseJson.message);
-            }
-            if (responseJson && responseJson.user?.token) {
-                try {
-                    await AsyncStorage.setItem(TOKEN, responseJson.user.token);
-                    return responseJson;
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
+    })
+
+    const signUpData = await signUpResponse.json();
+
+    if (signUpData.message) {
+        throw (signUpData.message);
+    }
+
+    if (signUpData.user?.token) {
+        await AsyncStorage.setItem(TOKEN, signUpData.user?.token);
+    }
+    return signUpData;
 }
 
 function generateBody(email: string, password: string): string {

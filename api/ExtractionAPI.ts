@@ -28,14 +28,13 @@ export async function getExtractionLogById(_id: string): Promise<Extraction> {
     if (_.isNil(headers)) {
         return {} as Extraction;
     }
-    return await fetch(`${BASE_URL}${EXTRACTION_LOGS}/${_id}`, {
+
+    const extractionsResponse = await fetch(`${BASE_URL}${EXTRACTION_LOGS}/${_id}`, {
         method: GET,
         headers,
-    })
-        .then((response) => response.json())
-        .then((json) => {
-            return json;
-        });
+    });
+
+    return await extractionsResponse.json();
 }
 
 export async function updateExtractionLog(id: string, rating?: number, notes?: string): Promise<any> {
@@ -67,13 +66,13 @@ export async function addExtraction(data: any) {
         shotTemperature: data.shotTemperature,
     });
 
-    return await fetch(`${BASE_URL}${EXTRACTION_LOGS}/add-extraction-log`, {
+    const addExtractionResponse = await fetch(`${BASE_URL}${EXTRACTION_LOGS}/add-extraction-log`, {
         method: POST,
         headers,
         body,
-    }).catch((error: any) => {
-        console.log(error);
-    }).then((response) => response);
+    });
+
+    return await addExtractionResponse.json();
 }
 
 async function getHeaders(): Promise<any> {
