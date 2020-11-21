@@ -14,7 +14,7 @@ export default function ExtractionDetailScreen({ extraction, onDismiss }: Extrac
     return (
         <>
             <Header {...{ close: onDismiss }} />
-            <Overview {...{ beans: extraction.beans, extractionDate: extraction.extractionDate, rating: extraction.rating }} />
+            <Overview {...{ id: extraction.id, beans: extraction.beans, extractionDate: extraction.extractionDate, rating: extraction.rating }} />
             <ExtractionDetails {...
                 {
                     weightIn: extraction.weightIn,
