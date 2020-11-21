@@ -33,11 +33,14 @@ export default function Extractions({ navigation, filters, search }: ExtracionsP
     };
 
     const searchData = (extractions: Extraction[]) => {
-        setExtractions(extractions.filter((extraction) => (extraction.beans?.includes(search) || extraction.grindSize?.includes(search))));
+        setExtractions(extractions.filter((extraction) => (extraction.beans?.toLowerCase().includes(search.toLowerCase()) || extraction.grindSize?.toLowerCase().includes(search.toLowerCase()))));
     }
+
+    const onClose = async () => await handleRefresh();
 
     useFocusEffect(
         useCallback(() => {
+            console.log('here');
             handleRefresh();
             return () => {
                 setLoading(false);
@@ -56,7 +59,7 @@ export default function Extractions({ navigation, filters, search }: ExtracionsP
             showsVerticalScrollIndicator={false}
             data={extractions}
             renderItem={(extractionData: any) => (
-                <ListItem {...{ extractionData, navigation }} />
+                <ListItem {...{ extractionData, navigation, onClose }} />
             )}
             keyExtractor={(extraction: Extraction) => extraction.id}
             refreshing={isLoading}

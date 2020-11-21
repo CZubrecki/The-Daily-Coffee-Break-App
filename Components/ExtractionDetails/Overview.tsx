@@ -31,7 +31,7 @@ export default function Overview({ id, beans, extractionDate, rating }: Overview
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[{ fontSize: 28, fontWeight: '500', color: '#654321' }]}>{beans}</Text>
+                <Text style={[{ fontSize: 28, fontWeight: '500', color: '#323232' }]}>{beans}</Text>
                 <Text style={[{ fontSize: 12, fontWeight: '500', color: '#B3B3B3' }]}>{moment(extractionDate).format(dateFormat)}</Text>
             </View>
             <View style={[styles.divider, { borderColor: '#654321' }]} />

@@ -10,14 +10,18 @@ import ExtractionDetailScreen from '../../Screens/ExtractionDetailScreen';
 export interface ListItemProps {
     extractionData: any,
     navigation: any;
+    onClose: () => void;
 }
 
-export default function ListItem({ extractionData, navigation }: ListItemProps) {
+export default function ListItem({ extractionData, navigation, onClose }: ListItemProps) {
     const dateFormat = 'h:mm a YYYY MMMM D';
     const extraction: Extraction = extractionData.item;
     const [modalVisible, setModalVisible] = useState(false);
 
-    const onDismiss = () => setModalVisible(false);
+    const onDismiss = async () => {
+        await onClose();
+        setModalVisible(false)
+    };
 
     return (
         <>

@@ -24,7 +24,7 @@ export default function ExtractionDetailScreen({ extraction, onDismiss }: Extrac
                     shotTemperature: extraction.shotTemperature,
                 }}
             />
-            <Notes />
+            <Notes {...{ id: extraction.id, notes: extraction.notes }} />
         </>
     );
 }
