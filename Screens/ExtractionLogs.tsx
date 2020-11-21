@@ -18,7 +18,7 @@ export default function ExtractionLogs({ navigation }: ExtractionLogsProps) {
     return (
         <>
             {/* <Carrossel /> */}
-            <SearchFilter {...{ navigation, applyFilters, applySearch }} />
+            <SearchFilter {...{ navigation, applyFilters, applySearch, filters }} />
             <View style={styles.recentExtractionTitleContainer}>
                 <Text style={styles.recentExtractions}>
                     Recent Extractions

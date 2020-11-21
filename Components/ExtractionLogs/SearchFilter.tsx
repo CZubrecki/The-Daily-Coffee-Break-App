@@ -8,17 +8,18 @@ interface SearchFilterProps {
     navigation: any;
     applyFilters: (filers: any) => void;
     applySearch: (search: any) => void;
+    filters?: any;
 }
 
 const { width } = Dimensions.get('window');
 
-export default function SearchFilter({ navigation, applyFilters, applySearch }: SearchFilterProps) {
+export default function SearchFilter({ navigation, applyFilters, applySearch, filters }: SearchFilterProps) {
     const [search, setSearch] = useState<string>('');
 
     return (
         <View style={styles.container}>
             <View>
-                <TouchableOpacity style={styles.filterContainer} onPress={() => navigation.navigate('FilterPage', { applyFilters })}>
+                <TouchableOpacity style={styles.filterContainer} onPress={() => navigation.navigate('FilterPage', { applyFilters, filters })}>
                     <FontAwesomeIcon icon={faSlidersH} color='#FFF' size={22} />
                 </TouchableOpacity>
             </View>

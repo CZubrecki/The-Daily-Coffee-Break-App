@@ -9,10 +9,11 @@ export default function FilterPage({ navigation, route }: any) {
     LogBox.ignoreLogs([
         'Non-serializable values were found in the navigation state',
     ]);
-    const [rating, setRating] = useState<any>();
-    const [weightInFilter, setWeightInFilter] = useState<number[]>([0, 50]);
-    const [weightOutFilter, setWeightOutFilter] = useState<number[]>([0, 100]);
-    const [extractionFilter, setExtractionFilter] = useState<number[]>([0, 100]);
+    const filters = route.params.filters;
+    const [rating, setRating] = useState<any>(filters?.rating || undefined);
+    const [weightInFilter, setWeightInFilter] = useState<number[]>(filters?.weightInFilter || [0, 50]);
+    const [weightOutFilter, setWeightOutFilter] = useState<number[]>(filters?.weightOutFilter || [0, 100]);
+    const [extractionFilter, setExtractionFilter] = useState<number[]>(filters?.extractionFilter || [0, 100]);
     const submitFilters = route.params.applyFilters;
 
     useLayoutEffect(() => {
@@ -49,10 +50,7 @@ export default function FilterPage({ navigation, route }: any) {
     }
 
     const onBackPressed = () => {
-        resetFilters();
-        if (_.isNil(rating)) {
-            navigation.goBack();
-        }
+        navigation.goBack();
     }
 
 
