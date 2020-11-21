@@ -1,17 +1,32 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { updateExtractionLog } from '../../Api/ExtractionAPI';
 import Rating from '../Rating';
 
 interface OverviewProps {
+    id: string;
     beans?: string;
     extractionDate: Date;
     rating?: number;
 }
 
-export default function Overview({ beans, extractionDate, rating }: OverviewProps) {
-    const ratingUpdated = () => { };
+export default function Overview({ id, beans, extractionDate, rating }: OverviewProps) {
     const dateFormat = 'h:mm a YYYY MMMM D';
+    const [displaySaveButton, setDisplaySaveButton] = useState(false);
+    const [updatedRating, setUpdatedRating] = useState();
+    const ratingUpdated = async (newRating: any) => {
+        if (newRating !== rating) {
+            setDisplaySaveButton(true);
+            setUpdatedRating(newRating);
+        }
+    };
+
+    const onSubmit = async () => {
+        await updateExtractionLog(id, updatedRating);
+        setDisplaySaveButton(false);
+    }
 
     return (
         <View style={styles.container}>
@@ -23,6 +38,13 @@ export default function Overview({ beans, extractionDate, rating }: OverviewProp
             <View style={styles.rating}>
                 <Rating {...{ ratingCallback: ratingUpdated, ratingProp: rating }} />
             </View>
+            {displaySaveButton ?
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => onSubmit()}>
+                        <Text style={[{ fontSize: 24, color: '#FFF' }]}>Save Rating</Text>
+                    </TouchableOpacity>
+                </View>
+                : null}
         </View>
     );
 }
@@ -53,5 +75,11 @@ const styles = StyleSheet.create({
     },
     rating: {
         paddingVertical: 20,
+    },
+    buttonContainer: {
+        backgroundColor: '#75604D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
     }
 });
