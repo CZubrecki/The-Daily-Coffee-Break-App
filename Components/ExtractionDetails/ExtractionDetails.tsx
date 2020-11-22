@@ -17,9 +17,9 @@ export default function ExtractionDetails({ weightIn, weightOut, extractionTime,
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[{ fontSize: 22, fontWeight: '500', color: '#323232' }]}>Extraction Details</Text>
+                <Text style={[{ fontSize: 22, fontWeight: '500', color: '#454545' }]}>Extraction Details</Text>
             </View>
-            <View style={[styles.divider, { borderColor: '#654321' }]} />
+            <View style={[styles.divider]} />
             <View style={styles.weightAndTime}>
                 <View style={styles.value}>
                     <Text style={[{ fontSize: 34, color: '#75604D' }]}>{weightIn}g</Text>
@@ -81,9 +81,8 @@ const styles = StyleSheet.create({
         width: width / 3,
     },
     divider: {
-        borderWidth: 1,
+        borderWidth: .5,
         borderColor: '#DCDCDC',
-        height: .5,
     },
     row: {
         flexDirection: 'row',

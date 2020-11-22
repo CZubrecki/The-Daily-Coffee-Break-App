@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
         marginVertical: 10,
-        marginTop: 40,
+        marginTop: 60,
         height: 40,
     },
     filterContainer: {

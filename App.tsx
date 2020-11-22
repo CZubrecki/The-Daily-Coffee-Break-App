@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { authLogin, authSignUp } from './Api/AuthApi';
 import FilterPage from './Screens/FilterPage';
 import SplashScreen from './Screens/SplashScreen';
+import EditPersonalInfo from './Screens/EditPersonalInfo';
 
 const Stack = createStackNavigator();
 
@@ -133,8 +134,8 @@ export default function App() {
                 }}
               />
               <Stack.Screen
-                name="ExtractionDetails"
-                component={ExtractionDetails}
+                name="EditPersonalInfo"
+                component={EditPersonalInfo}
                 options={{
                   headerShown: false,
                 }}

@@ -31,10 +31,10 @@ export default function Overview({ id, beans, extractionDate, rating }: Overview
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[{ fontSize: 28, fontWeight: '500', color: '#323232' }]}>{beans}</Text>
+                <Text style={[{ fontSize: 28, fontWeight: '500', color: '#454545' }]}>{beans}</Text>
                 <Text style={[{ fontSize: 12, fontWeight: '500', color: '#B3B3B3' }]}>{moment(extractionDate).format(dateFormat)}</Text>
             </View>
-            <View style={[styles.divider, { borderColor: '#654321' }]} />
+            <View style={[styles.divider]} />
             <View style={styles.rating}>
                 <Rating {...{ ratingCallback: ratingUpdated, ratingProp: rating }} />
             </View>
@@ -64,9 +64,8 @@ const styles = StyleSheet.create({
         elevation: 7
     },
     divider: {
-        borderWidth: 1,
+        borderWidth: .5,
         borderColor: '#DCDCDC',
-        height: .5,
     },
     header: {
         marginHorizontal: 20,

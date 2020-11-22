@@ -1,16 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as _ from 'lodash';
 
 interface EditNotesHeaserProps {
     onDismiss: () => void
     onComplete: (notes: any) => void;
-    updatedNotes: string;
+    updatedNotes: string | undefined;
 }
 
 export default function EditNotesHeader({ onDismiss, onComplete, updatedNotes }: EditNotesHeaserProps) {
     const submit = () => {
-        onComplete(updatedNotes);
+        if (!_.isNil(updatedNotes)) {
+            onComplete(updatedNotes);
+        }
         onDismiss();
     }
     return (

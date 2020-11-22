@@ -59,7 +59,7 @@ export default function ListItem({ extractionData, navigation, onClose }: ListIt
 const styles = StyleSheet.create({
     modal: {
         flex: 1,
-        backgroundColor: '#DCDCDC',
+        backgroundColor: '#FBF7F5',
     },
     container: {
         marginHorizontal: 10,

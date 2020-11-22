@@ -10,14 +10,17 @@ interface AddOrEditNoteProps {
 }
 
 export default function AddOrEditNote({ onDismiss, onComplete, notes }: AddOrEditNoteProps) {
-    const [updatedNotes, setUpdatedNotes] = useState<string>('');
+    const [updatedNotes, setUpdatedNotes] = useState<string>();
 
     return (
         <View style={styles.container}>
             <EditNotesHeader {...{ onDismiss, onComplete, updatedNotes }} />
             <View style={styles.textBox}>
                 <TextInput
+                    style={[{ color: '#676767' }]}
                     defaultValue={notes}
+                    multiline={true}
+                    maxLength={500}
                     autoFocus={true}
                     onChangeText={text => {
                         setUpdatedNotes(text);

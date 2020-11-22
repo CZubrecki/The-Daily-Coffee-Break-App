@@ -4,6 +4,8 @@ import TabBar from '../Components/TabBar';
 import { View } from 'react-native';
 import ExtractionLogs from './ExtractionLogs';
 import ComingSoon from './ComingSoon';
+import Profile from './Profile';
+import LandingPage from './LandingPage';
 
 export default function Home({ navigation }: any) {
     const [tab, setTab] = useState<string>('Home');
@@ -11,9 +13,11 @@ export default function Home({ navigation }: any) {
 
     return (
         <View style={styles.container}>
+            {tab === 'Home' ? <LandingPage /> : null}
             {tab === 'ExtractionLogs' ? <ExtractionLogs {...{ navigation }} /> : null}
             {tab === 'Camera' ? <ComingSoon /> : null}
             {tab === 'Search' ? <ComingSoon /> : null}
+            {tab === 'Profile' ? <Profile {...{ navigation }} /> : null}
             <TabBar {...{ onPress }} />
         </View>
     );

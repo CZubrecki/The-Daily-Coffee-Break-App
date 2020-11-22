@@ -40,7 +40,6 @@ export default function Extractions({ navigation, filters, search }: ExtracionsP
 
     useFocusEffect(
         useCallback(() => {
-            console.log('here');
             handleRefresh();
             return () => {
                 setLoading(false);

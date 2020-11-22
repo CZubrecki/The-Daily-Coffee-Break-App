@@ -31,11 +31,12 @@ export default function Notes({ id, notes }: NotesProps) {
             </Modal>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={[{ fontSize: 22, fontWeight: '500', color: '#323232' }]}>Notes</Text>
+                    <Text style={[{ fontSize: 22, fontWeight: '500', color: '#454545' }]}>Notes</Text>
                     <TouchableOpacity onPress={addNotes}>
-                        <FontAwesomeIcon icon={notes ? faPencilAlt : faPlus} color='#75604D' />
+                        <FontAwesomeIcon icon={notes || localNotes ? faPencilAlt : faPlus} color='#75604D' />
                     </TouchableOpacity>
                 </View>
+                <View style={styles.divider} />
                 {localNotes ?
                     <View style={styles.notesView}>
                         <Text style={[{ color: '#808080' }]}>{localNotes}</Text>
@@ -68,9 +69,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     divider: {
-        borderWidth: 1,
+        borderWidth: .5,
         borderColor: '#DCDCDC',
-        height: .5,
     },
     notes: {
         height: 100,
