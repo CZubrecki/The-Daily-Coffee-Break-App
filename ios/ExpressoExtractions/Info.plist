@@ -23,10 +23,9 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>the-daily-coffee-break</string>
-</array>
-
+	<array>
+		<string>the-daily-coffee-break</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

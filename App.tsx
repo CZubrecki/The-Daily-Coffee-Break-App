@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Screens/Home';
 import ExtractionLog from './Screens/ExtractionLog';
 import { Alert } from 'react-native';
-import ExtractionDetails from './Screens/ExtractionDetailScreen';
 import Login from './Screens/Login';
 import { AuthContext } from './Components/context';
 import AsyncStorage from '@react-native-community/async-storage';

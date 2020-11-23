@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import UpdateEmail from "../Components/ProfileSettings/UpdateEmail";
 import { AuthResponse } from "../Models/Auth";
 
 const BASE_URL = 'http://35.182.216.111:8080';
@@ -6,6 +7,8 @@ const DEV_URL = 'http://localhost:8080'
 const GET = 'GET';
 const POST = 'POST';
 const TOKEN = 'token';
+const EMAIL = 'email';
+const ID = 'id';
 
 const HEADERS = {
     Accept: 'application/json',
@@ -27,6 +30,8 @@ export async function authLogin(email: string, password: string): Promise<AuthRe
 
     if (loginData.user?.token) {
         await AsyncStorage.setItem(TOKEN, loginData.user?.token);
+        await AsyncStorage.setItem(EMAIL, loginData.user?.email);
+        await AsyncStorage.setItem(ID, loginData.user?.id);
     }
     return loginData;
 }
@@ -48,6 +53,25 @@ export async function authSignUp(email: string, password: string): Promise<AuthR
         await AsyncStorage.setItem(TOKEN, signUpData.user?.token);
     }
     return signUpData;
+}
+
+export async function updateEmail(email: string, updatedEmail: string, password: string): Promise<any> {
+    const updateEmailResponse = await fetch(`${BASE_URL}/auth/update-email`, {
+        method: POST,
+        headers: HEADERS,
+        body: {
+            email,
+            updatedEmail,
+            password
+        }
+    });
+
+    const updateEmail = await updateEmailResponse.json();
+
+    if (updateEmail.message) {
+        throw (updateEmail.message);
+    }
+    return updateEmail;
 }
 
 function generateBody(email: string, password: string): string {
